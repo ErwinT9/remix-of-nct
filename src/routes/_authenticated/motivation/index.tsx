@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 
 import { AppShell } from "@/components/AppShell";
+import { GoalsRoutines } from "@/components/goals/GoalsRoutines";
 import { MotivationIllustration } from "@/components/illustrations";
 import { ALCOHOL_CONTROL_TAGLINE, ALCOHOL_CONTROL_TITLE } from "@/lib/alcoholControl";
 import { haptic } from "@/lib/native/haptics";
@@ -93,30 +94,45 @@ const CARDS = [
   },
 ] as const;
 
+function MotivationCard({ card }: { card: (typeof CARDS)[number] }) {
+  const { to, icon: Icon, title, tagline, tint } = card;
+  return (
+    <li>
+      <Link
+        to={to}
+        onClick={() => haptic.select()}
+        className="press soft-card flex items-center gap-4 rounded-3xl p-5"
+      >
+        <span className={`flex size-11 shrink-0 items-center justify-center rounded-2xl ${tint}`}>
+          <Icon className="size-5 text-on-tint" aria-hidden />
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block font-semibold">{title}</span>
+          <span className="mt-1 block text-sm text-muted-foreground">{tagline}</span>
+        </span>
+        <ChevronRight className="size-5 shrink-0 text-muted-foreground" aria-hidden />
+      </Link>
+    </li>
+  );
+}
+
 function MotivationScreen() {
+  const [journey, ...rest] = CARDS;
   return (
     <AppShell title="Motivation" subtitle="A little reminder to keep choosing yourself.">
       <MotivationIllustration className="mx-auto mb-5 mt-1 w-40" />
       <ul className="space-y-3">
-        {CARDS.map(({ to, icon: Icon, title, tagline, tint }) => (
-          <li key={to}>
-            <Link
-              to={to}
-              onClick={() => haptic.select()}
-              className="press soft-card flex items-center gap-4 rounded-3xl p-5"
-            >
-              <span className={`flex size-11 shrink-0 items-center justify-center rounded-2xl ${tint}`}>
-                <Icon className="size-5 text-on-tint" aria-hidden />
-              </span>
-              <span className="min-w-0 flex-1">
-                <span className="block font-semibold">{title}</span>
-                <span className="mt-1 block text-sm text-muted-foreground">{tagline}</span>
-              </span>
-              <ChevronRight className="size-5 shrink-0 text-muted-foreground" aria-hidden />
-            </Link>
-          </li>
+        <MotivationCard card={journey} />
+      </ul>
+
+      <GoalsRoutines />
+
+      <ul className="mt-8 space-y-3">
+        {rest.map((card) => (
+          <MotivationCard key={card.to} card={card} />
         ))}
       </ul>
     </AppShell>
   );
 }
+
