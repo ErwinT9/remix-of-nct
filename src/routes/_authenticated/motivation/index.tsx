@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 
 import { AppShell } from "@/components/AppShell";
+import { GoalsRoutines } from "@/components/goals/GoalsRoutines";
 import { MotivationIllustration } from "@/components/illustrations";
 import { ALCOHOL_CONTROL_TAGLINE, ALCOHOL_CONTROL_TITLE } from "@/lib/alcoholControl";
 import { haptic } from "@/lib/native/haptics";
