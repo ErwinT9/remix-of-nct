@@ -4,6 +4,7 @@ import {
   Flame,
   Flower2,
   Footprints,
+  Headphones,
   Inbox,
   Leaf,
   Palette,
@@ -15,6 +16,7 @@ import { AppShell } from "@/components/AppShell";
 import { GoalsRoutines } from "@/components/goals/GoalsRoutines";
 import { MotivationIllustration } from "@/components/illustrations";
 import { ALCOHOL_CONTROL_TAGLINE, ALCOHOL_CONTROL_TITLE } from "@/lib/alcoholControl";
+import { HEALING_AUDIO_TAGLINE } from "@/lib/healingAudio";
 import { haptic } from "@/lib/native/haptics";
 
 export const Route = createFileRoute("/_authenticated/motivation/")({
@@ -56,6 +58,13 @@ const CARDS = [
     title: "Motivational Guide",
     tagline: "Short guides written for the moments the urge feels loudest.",
     tint: "bg-mint",
+  },
+  {
+    to: "/motivation/healing-audio",
+    icon: Headphones,
+    title: "Healing Audio",
+    tagline: HEALING_AUDIO_TAGLINE,
+    tint: "bg-lavender",
   },
   {
     to: "/motivation/meditation",
