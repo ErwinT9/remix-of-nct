@@ -1,43 +1,61 @@
-import { Check, Pencil, Star } from "lucide-react";
+import { Check, ListChecks, Pencil, Star } from "lucide-react";
 import { useEffect, useState } from "react";
 
+import { ScheduleFields, defaultSchedule, type ScheduleValue } from "@/components/goals/ScheduleFields";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
-import type { GoalInput } from "@/data/goalsRepo";
-import { GOAL_CATEGORIES, SUGGESTED_GOALS, type GoalCategory } from "@/lib/goals";
+import type { Goal, GoalInput } from "@/data/goalsRepo";
+import {
+  GOAL_CATEGORIES,
+  SUGGESTED_GOALS,
+  scheduleLabel,
+  timeOfDayLabel,
+  type GoalCategory,
+} from "@/lib/goals";
 import { haptic } from "@/lib/native/haptics";
 import { cn } from "@/lib/utils";
+
+type Mode = "suggested" | "existing" | "custom";
 
 export function AddGoalSheet({
   open,
   onOpenChange,
   onAdd,
+  onLinkExisting,
+  existingGoals = [],
   context,
   busy,
 }: {
   open: boolean;
   onOpenChange: (value: boolean) => void;
   onAdd: (goals: GoalInput[]) => Promise<void> | void;
+  /** Attach already-created goals to the current routine (routine context only). */
+  onLinkExisting?: (goalIds: string[]) => Promise<void> | void;
+  existingGoals?: Goal[];
   /** Routine name when adding inside a routine. */
   context?: string | undefined;
   busy?: boolean;
 }) {
+  const [mode, setMode] = useState<Mode>("suggested");
   const [picked, setPicked] = useState<string[]>([]);
-  const [custom, setCustom] = useState(false);
+  const [pickedExisting, setPickedExisting] = useState<string[]>([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState<GoalCategory>("self-care");
+  const [schedule, setSchedule] = useState<ScheduleValue>(() => defaultSchedule());
 
   useEffect(() => {
     if (open) {
+      setMode("suggested");
       setPicked([]);
-      setCustom(false);
+      setPickedExisting([]);
       setTitle("");
       setDescription("");
       setCategory("self-care");
+      setSchedule({ ...defaultSchedule(), repeat_type: "daily" });
     }
   }, [open]);
 
@@ -48,22 +66,57 @@ export function AddGoalSheet({
     );
   };
 
+  const canSubmit =
+    mode === "custom"
+      ? Boolean(title.trim())
+      : mode === "existing"
+        ? pickedExisting.length > 0
+        : picked.length > 0;
+
   const submit = async () => {
-    if (custom) {
+    const scheduleInput = {
+      start_date: schedule.start_date,
+      end_date: schedule.end_date,
+      time_of_day: schedule.time_of_day,
+      repeat_type: schedule.repeat_type,
+      repeat_days: schedule.repeat_days,
+    };
+    if (mode === "existing") {
+      if (pickedExisting.length === 0) return;
+      await onLinkExisting?.(pickedExisting);
+    } else if (mode === "custom") {
       if (!title.trim()) return;
-      await onAdd([{ title, description, category, is_custom: true }]);
+      await onAdd([{ title, description, category, is_custom: true, ...scheduleInput }]);
     } else {
       if (picked.length === 0) return;
       const flat = SUGGESTED_GOALS.flatMap((group) => group.goals);
       await onAdd(
         picked.map((goalTitle) => {
           const found = flat.find((item) => item.title === goalTitle);
-          return { title: goalTitle, category: found?.category ?? "other", is_custom: false };
+          return {
+            title: goalTitle,
+            category: found?.category ?? "other",
+            is_custom: false,
+            ...scheduleInput,
+          };
         }),
       );
     }
     onOpenChange(false);
   };
+
+  const tab = (id: Mode, label: string, Icon: typeof Star) => (
+    <button
+      type="button"
+      onClick={() => setMode(id)}
+      className={cn(
+        "press flex-1 rounded-2xl border px-2 py-2 text-xs font-medium",
+        mode === id ? "border-primary bg-muted" : "border-border text-muted-foreground",
+      )}
+    >
+      <Icon className="mr-1 inline size-4" aria-hidden /> {label}
+    </button>
+  );
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -73,34 +126,17 @@ export function AddGoalSheet({
       >
         <SheetHeader className="text-left">
           <SheetTitle className="text-xl">
-            {context ? `Add a goal to ${context}` : "Add a goal"}
+            {context ? `Add to ${context}` : "Add a goal"}
           </SheetTitle>
         </SheetHeader>
 
         <div className="mt-2 flex gap-2">
-          <button
-            type="button"
-            onClick={() => setCustom(false)}
-            className={cn(
-              "press flex-1 rounded-2xl border px-3 py-2 text-sm font-medium",
-              custom ? "border-border text-muted-foreground" : "border-primary bg-muted",
-            )}
-          >
-            <Star className="mr-1.5 inline size-4" aria-hidden /> Suggested
-          </button>
-          <button
-            type="button"
-            onClick={() => setCustom(true)}
-            className={cn(
-              "press flex-1 rounded-2xl border px-3 py-2 text-sm font-medium",
-              custom ? "border-primary bg-muted" : "border-border text-muted-foreground",
-            )}
-          >
-            <Pencil className="mr-1.5 inline size-4" aria-hidden /> Custom
-          </button>
+          {tab("suggested", "Suggested", Star)}
+          {onLinkExisting && existingGoals.length > 0 ? tab("existing", "My Goals", ListChecks) : null}
+          {tab("custom", "Create New", Pencil)}
         </div>
 
-        {custom ? (
+        {mode === "custom" ? (
           <div className="mt-5 space-y-4">
             <div className="space-y-1.5">
               <Label htmlFor="goal-title">Goal title</Label>
@@ -140,7 +176,9 @@ export function AddGoalSheet({
               </div>
             </div>
           </div>
-        ) : (
+        ) : null}
+
+        {mode === "suggested" ? (
           <div className="mt-5 space-y-5">
             {SUGGESTED_GOALS.map((group) => (
               <section key={group.category}>
@@ -177,18 +215,73 @@ export function AddGoalSheet({
               </section>
             ))}
           </div>
-        )}
+        ) : null}
+
+        {mode === "existing" ? (
+          <div className="mt-5">
+            <p className="text-xs text-muted-foreground">
+              Add goals you already created. They stay a single goal — no duplicates.
+            </p>
+            <ul className="mt-3 space-y-2">
+              {existingGoals.map((goal) => {
+                const active = pickedExisting.includes(goal.id);
+                return (
+                  <li key={goal.id}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        haptic.select();
+                        setPickedExisting((list) =>
+                          list.includes(goal.id)
+                            ? list.filter((item) => item !== goal.id)
+                            : [...list, goal.id],
+                        );
+                      }}
+                      className={cn(
+                        "press flex w-full items-center gap-3 rounded-2xl border px-4 py-3 text-left text-sm",
+                        active ? "border-primary bg-muted" : "border-border",
+                      )}
+                    >
+                      <span
+                        className={cn(
+                          "flex size-5 shrink-0 items-center justify-center rounded-full border",
+                          active ? "border-primary bg-primary" : "border-muted-foreground/40",
+                        )}
+                      >
+                        {active ? (
+                          <Check className="size-3.5 text-primary-foreground" aria-hidden />
+                        ) : null}
+                      </span>
+                      <span className="min-w-0 flex-1">
+                        {goal.title}
+                        <span className="mt-0.5 block text-xs text-muted-foreground">
+                          {scheduleLabel(goal)} · {timeOfDayLabel(goal.time_of_day)}
+                        </span>
+                      </span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ) : null}
+
+        {mode !== "existing" ? (
+          <div className="mt-6 border-t border-border pt-5">
+            <ScheduleFields value={schedule} onChange={setSchedule} />
+          </div>
+        ) : null}
 
         <div className="mt-6 flex gap-3">
           <Button variant="outline" className="flex-1" onClick={() => onOpenChange(false)}>
             Cancel
           </Button>
-          <Button
-            className="flex-1"
-            disabled={busy || (custom ? !title.trim() : picked.length === 0)}
-            onClick={() => void submit()}
-          >
-            {custom ? "Add goal" : `Add${picked.length ? ` ${picked.length}` : ""}`}
+          <Button className="flex-1" disabled={busy || !canSubmit} onClick={() => void submit()}>
+            {mode === "custom"
+              ? "Add goal"
+              : mode === "existing"
+                ? `Add${pickedExisting.length ? ` ${pickedExisting.length}` : ""}`
+                : `Add${picked.length ? ` ${picked.length}` : ""}`}
           </Button>
         </div>
       </SheetContent>
