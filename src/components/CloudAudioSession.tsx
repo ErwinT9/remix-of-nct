@@ -33,13 +33,13 @@ export function CloudAudioSession({
   doneLabel = "Done",
 }: {
   track: CloudAudioTrack;
-  screenTitle?: string;
   onExit: () => void;
   /** Fired once when the audio session finishes playing. */
-  onComplete?: () => void;
-  completionTitle?: string;
-  completionMessage?: string;
-  doneLabel?: string;
+  onComplete?: (() => void) | undefined;
+  completionTitle?: string | undefined;
+  completionMessage?: string | undefined;
+  doneLabel?: string | undefined;
+  screenTitle?: string | undefined;
 }) {
   const { online } = useNetworkStatus();
   const audioRef = useRef<HTMLAudioElement | null>(null);
