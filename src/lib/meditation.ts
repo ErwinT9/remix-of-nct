@@ -4,12 +4,16 @@ export type MeditationTrack = {
   src: string;
 };
 
-/** Bundled meditation audio (public/audio/meditation, filenames unchanged). */
+/**
+ * Meditation audio is streamed from the cloud (never bundled with the app), so
+ * the feature requires an internet connection just like the other Healing Audio
+ * sessions. To swap a recording, change the URL here only.
+ */
 export const MEDITATION_TRACKS: MeditationTrack[] = [
-  { id: "calm", label: "Calm", src: "/audio/meditation/Calm.m4a" },
-  { id: "peace", label: "Peace", src: "/audio/meditation/Peace.m4a" },
-  { id: "rain", label: "Rain", src: "/audio/meditation/Rain.m4a" },
-  { id: "wave", label: "Wave", src: "/audio/meditation/wave.m4a" },
+  { id: "calm", label: "Calm", src: "https://vexalabs.biz/audio/calm.m4a" },
+  { id: "peace", label: "Peace", src: "https://vexalabs.biz/audio/peace.m4a" },
+  { id: "rain", label: "Rain", src: "https://vexalabs.biz/audio/rain.m4a" },
+  { id: "wave", label: "Wave", src: "https://vexalabs.biz/audio/wave.m4a" },
 ];
 
 export function formatClock(seconds: number) {
