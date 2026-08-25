@@ -1,6 +1,14 @@
 import { supabase } from "@/integrations/supabase/client";
+import { dayKey } from "@/lib/goals";
 
-import { localDayKey } from "./repository";
+export type ScheduleFields = {
+  start_date: string;
+  end_date: string | null;
+  time_of_day: string;
+  repeat_type: string;
+  repeat_days: number[];
+  is_paused: boolean;
+};
 
 export type Routine = {
   id: string;
@@ -11,7 +19,7 @@ export type Routine = {
   time_category: string;
   is_starter: boolean;
   sort_order: number;
-};
+} & ScheduleFields;
 
 export type Goal = {
   id: string;
@@ -22,22 +30,25 @@ export type Goal = {
   category: string;
   is_custom: boolean;
   sort_order: number;
-};
+} & ScheduleFields;
 
-export type GoalCompletion = {
+export type RoutineGoalLink = {
   id: string;
+  routine_id: string;
   goal_id: string;
-  completion_date: string;
-  completed: boolean;
+  sort_order: number;
 };
 
 export type GoalsSnapshot = {
   routines: Routine[];
   goals: Goal[];
-  /** Today's completion rows, keyed by goal id. */
+  links: RoutineGoalLink[];
+  /** Completion rows for the selected date, keyed by goal id. */
   completions: Record<string, boolean>;
   date: string;
 };
+
+export type ScheduleInput = Partial<ScheduleFields>;
 
 export type GoalInput = {
   title: string;
@@ -45,7 +56,7 @@ export type GoalInput = {
   category?: string;
   routine_id?: string | null;
   is_custom?: boolean;
-};
+} & ScheduleInput;
 
 export type RoutineInput = {
   title: string;
@@ -53,12 +64,33 @@ export type RoutineInput = {
   icon?: string;
   time_category?: string;
   is_starter?: boolean;
-};
+} & ScheduleInput;
+
+function scheduleColumns(input: ScheduleInput) {
+  return {
+    start_date: input.start_date ?? dayKey(),
+    end_date: input.end_date ?? null,
+    time_of_day: input.time_of_day ?? "anytime",
+    repeat_type: input.repeat_type ?? "daily",
+    repeat_days: input.repeat_days ?? [],
+    is_paused: input.is_paused ?? false,
+  };
+}
+
+function schedulePatch(input: ScheduleInput) {
+  return {
+    ...(input.start_date !== undefined ? { start_date: input.start_date } : {}),
+    ...(input.end_date !== undefined ? { end_date: input.end_date } : {}),
+    ...(input.time_of_day !== undefined ? { time_of_day: input.time_of_day } : {}),
+    ...(input.repeat_type !== undefined ? { repeat_type: input.repeat_type } : {}),
+    ...(input.repeat_days !== undefined ? { repeat_days: input.repeat_days } : {}),
+    ...(input.is_paused !== undefined ? { is_paused: input.is_paused } : {}),
+  };
+}
 
 export const goalsRepo = {
-  async load(userId: string): Promise<GoalsSnapshot> {
-    const date = localDayKey();
-    const [routines, goals, completions] = await Promise.all([
+  async load(userId: string, date: string = dayKey()): Promise<GoalsSnapshot> {
+    const [routines, goals, links, completions] = await Promise.all([
       supabase
         .from("routines")
         .select("*")
@@ -72,6 +104,11 @@ export const goalsRepo = {
         .order("sort_order", { ascending: true })
         .order("created_at", { ascending: true }),
       supabase
+        .from("routine_goals")
+        .select("id, routine_id, goal_id, sort_order")
+        .eq("user_id", userId)
+        .order("sort_order", { ascending: true }),
+      supabase
         .from("goal_completions")
         .select("goal_id, completed")
         .eq("user_id", userId)
@@ -79,6 +116,7 @@ export const goalsRepo = {
     ]);
     if (routines.error) throw routines.error;
     if (goals.error) throw goals.error;
+    if (links.error) throw links.error;
     if (completions.error) throw completions.error;
 
     const map: Record<string, boolean> = {};
@@ -87,38 +125,74 @@ export const goalsRepo = {
     return {
       routines: (routines.data ?? []) as Routine[],
       goals: (goals.data ?? []) as Goal[],
+      links: (links.data ?? []) as RoutineGoalLink[],
       completions: map,
       date,
     };
   },
 
+  /** Insert goals; when routineId is given they are also linked to that routine. */
+  async addGoals(
+    userId: string,
+    inputs: GoalInput[],
+    startOrder = 0,
+    routineId: string | null = null,
+  ): Promise<string[]> {
+    if (inputs.length === 0) return [];
+    const { data, error } = await supabase
+      .from("goals")
+      .insert(
+        inputs.map((input, index) => ({
+          user_id: userId,
+          title: input.title.trim(),
+          description: input.description?.trim() || null,
+          category: input.category ?? "other",
+          routine_id: routineId ?? input.routine_id ?? null,
+          is_custom: input.is_custom ?? true,
+          sort_order: startOrder + index,
+          ...scheduleColumns(input),
+        })),
+      )
+      .select("id");
+    if (error) throw error;
+    const ids = (data ?? []).map((row) => row.id as string);
+    if (routineId) await goalsRepo.linkGoals(userId, routineId, ids, startOrder);
+    return ids;
+  },
+
   async addGoal(userId: string, input: GoalInput, sortOrder = 0): Promise<void> {
-    const { error } = await supabase.from("goals").insert({
-      user_id: userId,
-      title: input.title.trim(),
-      description: input.description?.trim() || null,
-      category: input.category ?? "other",
-      routine_id: input.routine_id ?? null,
-      is_custom: input.is_custom ?? true,
-      sort_order: sortOrder,
-    });
+    await goalsRepo.addGoals(userId, [input], sortOrder, input.routine_id ?? null);
+  },
+
+  /** Attach existing goals to a routine without duplicating the goal rows. */
+  async linkGoals(
+    userId: string,
+    routineId: string,
+    goalIds: string[],
+    startOrder = 0,
+  ): Promise<void> {
+    if (goalIds.length === 0) return;
+    const { error } = await supabase.from("routine_goals").upsert(
+      goalIds.map((goalId, index) => ({
+        user_id: userId,
+        routine_id: routineId,
+        goal_id: goalId,
+        sort_order: startOrder + index,
+      })),
+      { onConflict: "routine_id,goal_id" },
+    );
     if (error) throw error;
   },
 
-  async addGoals(userId: string, inputs: GoalInput[], startOrder = 0): Promise<void> {
-    if (inputs.length === 0) return;
-    const { error } = await supabase.from("goals").insert(
-      inputs.map((input, index) => ({
-        user_id: userId,
-        title: input.title.trim(),
-        description: input.description?.trim() || null,
-        category: input.category ?? "other",
-        routine_id: input.routine_id ?? null,
-        is_custom: input.is_custom ?? true,
-        sort_order: startOrder + index,
-      })),
-    );
+  /** Remove a goal from a routine, keeping the goal itself. */
+  async unlinkGoal(routineId: string, goalId: string): Promise<void> {
+    const { error } = await supabase
+      .from("routine_goals")
+      .delete()
+      .eq("routine_id", routineId)
+      .eq("goal_id", goalId);
     if (error) throw error;
+    await supabase.from("goals").update({ routine_id: null }).eq("id", goalId);
   },
 
   async updateGoal(goalId: string, patch: Partial<GoalInput>): Promise<void> {
@@ -130,6 +204,7 @@ export const goalsRepo = {
           ? { description: patch.description?.trim() || null }
           : {}),
         ...(patch.category !== undefined ? { category: patch.category } : {}),
+        ...schedulePatch(patch),
       })
       .eq("id", goalId);
     if (error) throw error;
@@ -150,14 +225,24 @@ export const goalsRepo = {
         icon: input.icon ?? "sunrise",
         time_category: input.time_category ?? "anytime",
         is_starter: input.is_starter ?? false,
+        ...scheduleColumns(input),
       })
       .select("id")
       .single();
     if (error) throw error;
     const routineId = data.id as string;
+    const schedule: ScheduleInput = {
+      start_date: input.start_date ?? dayKey(),
+      end_date: input.end_date ?? null,
+      time_of_day: input.time_of_day ?? input.time_category ?? "anytime",
+      repeat_type: input.repeat_type ?? "daily",
+      repeat_days: input.repeat_days ?? [],
+    };
     await goalsRepo.addGoals(
       userId,
-      goals.map((goal) => ({ ...goal, routine_id: routineId })),
+      goals.map((goal) => ({ ...schedule, ...goal })),
+      0,
+      routineId,
     );
     return routineId;
   },
@@ -172,6 +257,7 @@ export const goalsRepo = {
           : {}),
         ...(patch.icon !== undefined ? { icon: patch.icon } : {}),
         ...(patch.time_category !== undefined ? { time_category: patch.time_category } : {}),
+        ...schedulePatch(patch),
       })
       .eq("id", routineId);
     if (error) throw error;
@@ -183,8 +269,12 @@ export const goalsRepo = {
   },
 
   /** Upsert one completion row per goal per local calendar day. */
-  async setCompleted(userId: string, goalId: string, completed: boolean): Promise<void> {
-    const date = localDayKey();
+  async setCompleted(
+    userId: string,
+    goalId: string,
+    completed: boolean,
+    date: string = dayKey(),
+  ): Promise<void> {
     const { error } = await supabase.from("goal_completions").upsert(
       {
         user_id: userId,
