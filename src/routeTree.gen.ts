@@ -43,6 +43,7 @@ import { Route as AuthenticatedMotivationJourneyRouteImport } from './routes/_au
 import { Route as AuthenticatedMotivationMeditationRouteImport } from './routes/_authenticated/motivation/meditation'
 import { Route as AuthenticatedMotivationWalkRouteImport } from './routes/_authenticated/motivation/walk'
 import { Route as AuthenticatedMotivationWorryBoxRouteImport } from './routes/_authenticated/motivation/worry-box'
+import { Route as AuthenticatedMotivationHealingAudioIndexRouteImport } from './routes/_authenticated/motivation/healing-audio/index'
 import { Route as ApiPublicHooksPushSchedulerRouteImport } from './routes/api/public/hooks/push-scheduler'
 
 const IndexRoute = IndexRouteImport.update({
@@ -229,6 +230,12 @@ const AuthenticatedMotivationWorryBoxRoute =
     path: '/motivation/worry-box',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedMotivationHealingAudioIndexRoute =
+  AuthenticatedMotivationHealingAudioIndexRouteImport.update({
+    id: '/motivation/healing-audio/',
+    path: '/motivation/healing-audio/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const ApiPublicHooksPushSchedulerRoute =
   ApiPublicHooksPushSchedulerRouteImport.update({
     id: '/api/public/hooks/push-scheduler',
@@ -271,6 +278,7 @@ export interface FileRoutesByFullPath {
   '/motivation/worry-box': typeof AuthenticatedMotivationWorryBoxRoute
   '/motivation/': typeof AuthenticatedMotivationIndexRoute
   '/api/public/hooks/push-scheduler': typeof ApiPublicHooksPushSchedulerRoute
+  '/motivation/healing-audio/': typeof AuthenticatedMotivationHealingAudioIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -307,6 +315,7 @@ export interface FileRoutesByTo {
   '/motivation/worry-box': typeof AuthenticatedMotivationWorryBoxRoute
   '/motivation': typeof AuthenticatedMotivationIndexRoute
   '/api/public/hooks/push-scheduler': typeof ApiPublicHooksPushSchedulerRoute
+  '/motivation/healing-audio': typeof AuthenticatedMotivationHealingAudioIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -345,6 +354,7 @@ export interface FileRoutesById {
   '/_authenticated/motivation/worry-box': typeof AuthenticatedMotivationWorryBoxRoute
   '/_authenticated/motivation/': typeof AuthenticatedMotivationIndexRoute
   '/api/public/hooks/push-scheduler': typeof ApiPublicHooksPushSchedulerRoute
+  '/_authenticated/motivation/healing-audio/': typeof AuthenticatedMotivationHealingAudioIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -383,6 +393,7 @@ export interface FileRouteTypes {
     | '/motivation/worry-box'
     | '/motivation/'
     | '/api/public/hooks/push-scheduler'
+    | '/motivation/healing-audio/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -419,6 +430,7 @@ export interface FileRouteTypes {
     | '/motivation/worry-box'
     | '/motivation'
     | '/api/public/hooks/push-scheduler'
+    | '/motivation/healing-audio'
   id:
     | '__root__'
     | '/'
@@ -456,6 +468,7 @@ export interface FileRouteTypes {
     | '/_authenticated/motivation/worry-box'
     | '/_authenticated/motivation/'
     | '/api/public/hooks/push-scheduler'
+    | '/_authenticated/motivation/healing-audio/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -709,6 +722,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMotivationWorryBoxRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/motivation/healing-audio/': {
+      id: '/_authenticated/motivation/healing-audio/'
+      path: '/motivation/healing-audio'
+      fullPath: '/motivation/healing-audio/'
+      preLoaderRoute: typeof AuthenticatedMotivationHealingAudioIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/api/public/hooks/push-scheduler': {
       id: '/api/public/hooks/push-scheduler'
       path: '/api/public/hooks/push-scheduler'
@@ -747,6 +767,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedMotivationWalkRoute: typeof AuthenticatedMotivationWalkRoute
   AuthenticatedMotivationWorryBoxRoute: typeof AuthenticatedMotivationWorryBoxRoute
   AuthenticatedMotivationIndexRoute: typeof AuthenticatedMotivationIndexRoute
+  AuthenticatedMotivationHealingAudioIndexRoute: typeof AuthenticatedMotivationHealingAudioIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -780,6 +801,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedMotivationWalkRoute: AuthenticatedMotivationWalkRoute,
   AuthenticatedMotivationWorryBoxRoute: AuthenticatedMotivationWorryBoxRoute,
   AuthenticatedMotivationIndexRoute: AuthenticatedMotivationIndexRoute,
+  AuthenticatedMotivationHealingAudioIndexRoute:
+    AuthenticatedMotivationHealingAudioIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
