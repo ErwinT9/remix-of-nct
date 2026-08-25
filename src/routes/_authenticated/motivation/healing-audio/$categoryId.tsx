@@ -129,16 +129,6 @@ function HealingAudioCategoryScreen() {
         })}
       </ul>
 
-      <button
-        type="button"
-        onClick={() => {
-          haptic.light();
-          router.history.back();
-        }}
-        className="sr-only"
-      >
-        Back to Healing Audio
-      </button>
     </SubScreen>
   );
 }
