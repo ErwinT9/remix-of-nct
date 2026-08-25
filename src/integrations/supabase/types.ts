@@ -195,10 +195,16 @@ export type Database = {
           category: string
           created_at: string
           description: string | null
+          end_date: string | null
           id: string
           is_custom: boolean
+          is_paused: boolean
+          repeat_days: number[]
+          repeat_type: string
           routine_id: string | null
           sort_order: number
+          start_date: string
+          time_of_day: string
           title: string
           updated_at: string
           user_id: string
@@ -207,10 +213,16 @@ export type Database = {
           category?: string
           created_at?: string
           description?: string | null
+          end_date?: string | null
           id?: string
           is_custom?: boolean
+          is_paused?: boolean
+          repeat_days?: number[]
+          repeat_type?: string
           routine_id?: string | null
           sort_order?: number
+          start_date?: string
+          time_of_day?: string
           title: string
           updated_at?: string
           user_id: string
@@ -219,10 +231,16 @@ export type Database = {
           category?: string
           created_at?: string
           description?: string | null
+          end_date?: string | null
           id?: string
           is_custom?: boolean
+          is_paused?: boolean
+          repeat_days?: number[]
+          repeat_type?: string
           routine_id?: string | null
           sort_order?: number
+          start_date?: string
+          time_of_day?: string
           title?: string
           updated_at?: string
           user_id?: string
@@ -756,15 +774,66 @@ export type Database = {
         }
         Relationships: []
       }
+      routine_goals: {
+        Row: {
+          created_at: string
+          goal_id: string
+          id: string
+          routine_id: string
+          sort_order: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          goal_id: string
+          id?: string
+          routine_id: string
+          sort_order?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          goal_id?: string
+          id?: string
+          routine_id?: string
+          sort_order?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "routine_goals_goal_id_fkey"
+            columns: ["goal_id"]
+            isOneToOne: false
+            referencedRelation: "goals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "routine_goals_routine_id_fkey"
+            columns: ["routine_id"]
+            isOneToOne: false
+            referencedRelation: "routines"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       routines: {
         Row: {
           created_at: string
           description: string | null
+          end_date: string | null
           icon: string
           id: string
+          is_paused: boolean
           is_starter: boolean
+          repeat_days: number[]
+          repeat_type: string
           sort_order: number
+          start_date: string
           time_category: string
+          time_of_day: string
           title: string
           updated_at: string
           user_id: string
@@ -772,11 +841,17 @@ export type Database = {
         Insert: {
           created_at?: string
           description?: string | null
+          end_date?: string | null
           icon?: string
           id?: string
+          is_paused?: boolean
           is_starter?: boolean
+          repeat_days?: number[]
+          repeat_type?: string
           sort_order?: number
+          start_date?: string
           time_category?: string
+          time_of_day?: string
           title: string
           updated_at?: string
           user_id: string
@@ -784,11 +859,17 @@ export type Database = {
         Update: {
           created_at?: string
           description?: string | null
+          end_date?: string | null
           icon?: string
           id?: string
+          is_paused?: boolean
           is_starter?: boolean
+          repeat_days?: number[]
+          repeat_type?: string
           sort_order?: number
+          start_date?: string
           time_category?: string
+          time_of_day?: string
           title?: string
           updated_at?: string
           user_id?: string
