@@ -2,20 +2,17 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ChevronRight,
   Flame,
-  Flower2,
   Footprints,
   Headphones,
   Inbox,
   Leaf,
   Palette,
   Sparkles,
-  Wine,
 } from "lucide-react";
 
 import { AppShell } from "@/components/AppShell";
 import { GoalsRoutines } from "@/components/goals/GoalsRoutines";
 import { MotivationIllustration } from "@/components/illustrations";
-import { ALCOHOL_CONTROL_TAGLINE, ALCOHOL_CONTROL_TITLE } from "@/lib/alcoholControl";
 import { HEALING_AUDIO_TAGLINE } from "@/lib/healingAudio";
 import { haptic } from "@/lib/native/haptics";
 
@@ -67,13 +64,6 @@ const CARDS = [
     tint: "bg-lavender",
   },
   {
-    to: "/motivation/meditation",
-    icon: Flower2,
-    title: "Mindful Meditation",
-    tagline: "Practice for few minutes meditation to relax and focus",
-    tint: "bg-sky",
-  },
-  {
     to: "/motivation/walk",
     icon: Footprints,
     title: "Outdoor Walk",
@@ -94,13 +84,7 @@ const CARDS = [
     tagline: "Collect the small good things, one candy, heart or leaf at a time",
     tint: "bg-blush",
   },
-  {
-    to: "/motivation/alcohol-control",
-    icon: Wine,
-    title: ALCOHOL_CONTROL_TITLE,
-    tagline: ALCOHOL_CONTROL_TAGLINE,
-    tint: "bg-mint",
-  },
+
 ] as const;
 
 function MotivationCard({ card }: { card: (typeof CARDS)[number] }) {
