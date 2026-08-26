@@ -1,6 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { Check, ChevronDown, MoreVertical, Plus, Sprout, Target } from "lucide-react";
+import {
+  Check,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  MoreVertical,
+  Plus,
+  Sprout,
+  Target,
+} from "lucide-react";
 import { useState } from "react";
 
 import { SoftCard } from "@/components/SoftCard";
@@ -35,22 +44,36 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { goalsRepo, type Goal, type GoalInput, type Routine } from "@/data/goalsRepo";
 import { useAuth } from "@/hooks/useAuth";
-import { categoryLabel, goalShortcut, routineIcon } from "@/lib/goals";
+import {
+  categoryLabel,
+  dayKey,
+  friendlyDay,
+  goalShortcut,
+  isActiveOn,
+  routineIcon,
+  scheduleLabel,
+  shiftDay,
+  timeOfDayLabel,
+} from "@/lib/goals";
 import { haptic } from "@/lib/native/haptics";
 import { cn } from "@/lib/utils";
 
 function GoalRow({
   goal,
   done,
+  shared,
   onToggle,
   onEdit,
   onDelete,
+  onRemoveFromRoutine,
 }: {
   goal: Goal;
   done: boolean;
+  shared?: boolean;
   onToggle: () => void;
   onEdit: () => void;
   onDelete: () => void;
+  onRemoveFromRoutine?: () => void;
 }) {
   const shortcut = goalShortcut(goal.title);
   return (
@@ -76,6 +99,10 @@ function GoalRow({
         >
           {goal.title}
         </p>
+        <p className="mt-0.5 text-xs text-muted-foreground">
+          {scheduleLabel(goal)} · {timeOfDayLabel(goal.time_of_day)}
+          {shared ? " · also in a routine" : ""}
+        </p>
         {goal.description ? (
           <p className="mt-0.5 text-xs text-muted-foreground">{goal.description}</p>
         ) : null}
@@ -97,6 +124,9 @@ function GoalRow({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem onClick={onEdit}>Edit goal</DropdownMenuItem>
+          {onRemoveFromRoutine ? (
+            <DropdownMenuItem onClick={onRemoveFromRoutine}>Remove from routine</DropdownMenuItem>
+          ) : null}
           <DropdownMenuItem className="text-destructive" onClick={onDelete}>
             Delete goal
           </DropdownMenuItem>
@@ -110,7 +140,8 @@ export function GoalsRoutines() {
   const { user } = useAuth();
   const userId = user?.id ?? "";
   const queryClient = useQueryClient();
-  const queryKey = ["goals-routines", userId];
+  const [date, setDate] = useState(() => dayKey());
+  const queryKey = ["goals-routines", userId, date];
 
   const [addGoalFor, setAddGoalFor] = useState<{ routine: Routine | null } | null>(null);
   const [routineSheet, setRoutineSheet] = useState<{ routine: Routine | null } | null>(null);
@@ -122,21 +153,41 @@ export function GoalsRoutines() {
 
   const snapshot = useQuery({
     queryKey,
-    queryFn: () => goalsRepo.load(userId),
+    queryFn: () => goalsRepo.load(userId, date),
     enabled: Boolean(userId),
   });
 
   const data = snapshot.data;
   const routines = data?.routines ?? [];
   const goals = data?.goals ?? [];
+  const links = data?.links ?? [];
   const completions = data?.completions ?? {};
-  const standalone = goals.filter((goal) => !goal.routine_id);
 
-  const refresh = () => queryClient.invalidateQueries({ queryKey });
+  const goalById = new Map(goals.map((goal) => [goal.id, goal]));
+  const linkedGoalIds = new Set(links.map((link) => link.goal_id));
+  const goalsForRoutine = (routineId: string) =>
+    links
+      .filter((link) => link.routine_id === routineId)
+      .map((link) => goalById.get(link.goal_id))
+      .filter((goal): goal is Goal => Boolean(goal));
+
+  const standalone = goals.filter((goal) => !goal.routine_id);
+  const standaloneToday = standalone.filter((goal) => isActiveOn(goal, date));
+  const activeRoutines = routines.filter((routine) => isActiveOn(routine, date));
+
+  // Unique goal ids scheduled for the selected date (shared goals count once).
+  const activeIds = new Set(standaloneToday.map((goal) => goal.id));
+  for (const routine of activeRoutines) {
+    for (const goal of goalsForRoutine(routine.id)) {
+      if (isActiveOn(goal, date)) activeIds.add(goal.id);
+    }
+  }
+
+  const refresh = () => queryClient.invalidateQueries({ queryKey: ["goals-routines", userId] });
 
   const toggle = useMutation({
     mutationFn: ({ goalId, completed }: { goalId: string; completed: boolean }) =>
-      goalsRepo.setCompleted(userId, goalId, completed),
+      goalsRepo.setCompleted(userId, goalId, completed, date),
     onMutate: async ({ goalId, completed }) => {
       await queryClient.cancelQueries({ queryKey });
       const previous = queryClient.getQueryData(queryKey);
@@ -153,13 +204,21 @@ export function GoalsRoutines() {
 
   const addGoals = useMutation({
     mutationFn: async ({ inputs, routineId }: { inputs: GoalInput[]; routineId: string | null }) => {
-      const base = goals.filter((goal) => goal.routine_id === routineId).length;
-      await goalsRepo.addGoals(
-        userId,
-        inputs.map((input) => ({ ...input, routine_id: routineId })),
-        base,
-      );
+      const base = routineId ? goalsForRoutine(routineId).length : standalone.length;
+      await goalsRepo.addGoals(userId, inputs, base, routineId);
     },
+    onSuccess: () => void refresh(),
+  });
+
+  const linkGoals = useMutation({
+    mutationFn: async ({ routineId, goalIds }: { routineId: string; goalIds: string[] }) =>
+      goalsRepo.linkGoals(userId, routineId, goalIds, goalsForRoutine(routineId).length),
+    onSuccess: () => void refresh(),
+  });
+
+  const unlinkGoal = useMutation({
+    mutationFn: ({ routineId, goalId }: { routineId: string; goalId: string }) =>
+      goalsRepo.unlinkGoal(routineId, goalId),
     onSuccess: () => void refresh(),
   });
 
@@ -196,17 +255,19 @@ export function GoalsRoutines() {
     onSuccess: () => void refresh(),
   });
 
-  const totalToday = goals.length;
-  const doneToday = goals.filter((goal) => completions[goal.id]).length;
+  const totalToday = activeIds.size;
+  const doneToday = [...activeIds].filter((id) => completions[id]).length;
   const percent = totalToday === 0 ? 0 : Math.round((doneToday / totalToday) * 100);
   const allDone = totalToday > 0 && doneToday === totalToday;
-  const isEmpty = totalToday === 0 && routines.length === 0;
+  const isEmpty = goals.length === 0 && routines.length === 0;
+  const isToday = date === dayKey();
 
-  const goalCard = (goal: Goal) => (
+  const goalCard = (goal: Goal, routine?: Routine) => (
     <GoalRow
-      key={goal.id}
+      key={`${routine?.id ?? "solo"}-${goal.id}`}
       goal={goal}
       done={Boolean(completions[goal.id])}
+      shared={!routine && linkedGoalIds.has(goal.id)}
       onToggle={() => {
         haptic.light();
         toggle.mutate({ goalId: goal.id, completed: !completions[goal.id] });
@@ -217,6 +278,12 @@ export function GoalsRoutines() {
         setEditDescription(goal.description ?? "");
       }}
       onDelete={() => removeGoal.mutate(goal.id)}
+      {...(routine
+        ? {
+            onRemoveFromRoutine: () =>
+              unlinkGoal.mutate({ routineId: routine.id, goalId: goal.id }),
+          }
+        : {})}
     />
   );
 
@@ -231,11 +298,55 @@ export function GoalsRoutines() {
         </p>
       </header>
 
+      {/* Date navigation */}
+      <SoftCard className="mt-4 py-3">
+        <div className="flex items-center justify-between gap-2">
+          <button
+            type="button"
+            aria-label="Previous day"
+            onClick={() => setDate((value) => shiftDay(value, -1))}
+            className="press flex size-9 items-center justify-center rounded-full border border-border"
+          >
+            <ChevronLeft className="size-4" aria-hidden />
+          </button>
+          <div className="min-w-0 text-center">
+            <p className="truncate text-sm font-semibold">{friendlyDay(date)}</p>
+            <label className="mt-0.5 block text-xs text-muted-foreground">
+              <span className="sr-only">Choose a date</span>
+              <input
+                type="date"
+                value={date}
+                onChange={(event) => event.target.value && setDate(event.target.value)}
+                className="bg-transparent text-center text-xs text-muted-foreground"
+              />
+            </label>
+          </div>
+          <button
+            type="button"
+            aria-label="Next day"
+            onClick={() => setDate((value) => shiftDay(value, 1))}
+            className="press flex size-9 items-center justify-center rounded-full border border-border"
+          >
+            <ChevronRight className="size-4" aria-hidden />
+          </button>
+        </div>
+        {!isToday ? (
+          <button
+            type="button"
+            onClick={() => setDate(dayKey())}
+            className="press mt-2 w-full text-center text-xs font-medium text-primary"
+          >
+            Back to today
+          </button>
+        ) : null}
+      </SoftCard>
+
       {!isEmpty ? (
-        <SoftCard className="mt-4">
+        <SoftCard className="mt-3">
           <div className="flex items-center justify-between gap-3">
             <p className="flex items-center gap-2 text-sm font-semibold">
-              <Sprout className="size-4 text-primary" aria-hidden /> Today&apos;s Progress
+              <Sprout className="size-4 text-primary" aria-hidden />{" "}
+              {isToday ? "Today's Progress" : `${friendlyDay(date)}'s Progress`}
             </p>
             <p className="text-sm text-muted-foreground">
               {doneToday} of {totalToday} completed
@@ -248,9 +359,11 @@ export function GoalsRoutines() {
             />
           </div>
           <p className="mt-3 text-xs text-muted-foreground">
-            {allDone
-              ? "🎉 Amazing work! You've completed everything planned for today."
-              : "Every small step forward matters."}
+            {totalToday === 0
+              ? "Nothing scheduled for this day."
+              : allDone
+                ? "🎉 Amazing work! You've completed everything planned."
+                : "Every small step forward matters."}
           </p>
         </SoftCard>
       ) : null}
@@ -276,11 +389,13 @@ export function GoalsRoutines() {
         </SoftCard>
       ) : null}
 
-      {standalone.length > 0 ? (
+      {standaloneToday.length > 0 ? (
         <div className="mt-5">
           <h3 className="px-1 text-sm font-semibold text-muted-foreground">My Goals</h3>
           <SoftCard className="mt-2 py-2">
-            <ul className="divide-y divide-border/60">{standalone.map(goalCard)}</ul>
+            <ul className="divide-y divide-border/60">
+              {standaloneToday.map((goal) => goalCard(goal))}
+            </ul>
           </SoftCard>
         </div>
       ) : null}
@@ -295,13 +410,13 @@ export function GoalsRoutines() {
         </button>
       ) : null}
 
-      {routines.length > 0 ? (
+      {activeRoutines.length > 0 ? (
         <div className="mt-6">
           <h3 className="px-1 text-sm font-semibold text-muted-foreground">My Routines</h3>
           <ul className="mt-2 space-y-3">
-            {routines.map((routine) => {
+            {activeRoutines.map((routine) => {
               const Icon = routineIcon(routine.icon);
-              const items = goals.filter((goal) => goal.routine_id === routine.id);
+              const items = goalsForRoutine(routine.id).filter((goal) => isActiveOn(goal, date));
               const done = items.filter((goal) => completions[goal.id]).length;
               const open = expanded.includes(routine.id);
               const routineDone = items.length > 0 && done === items.length;
@@ -325,6 +440,9 @@ export function GoalsRoutines() {
                         className="min-w-0 flex-1 text-left"
                       >
                         <span className="block font-semibold">{routine.title}</span>
+                        <span className="mt-0.5 block text-xs text-muted-foreground">
+                          {scheduleLabel(routine)} · {timeOfDayLabel(routine.time_of_day)}
+                        </span>
                         {routine.description ? (
                           <span className="mt-0.5 block text-xs text-muted-foreground">
                             {routine.description}
@@ -396,10 +514,12 @@ export function GoalsRoutines() {
 
                     {open ? (
                       <div className="mt-1">
-                        <ul className="divide-y divide-border/60">{items.map(goalCard)}</ul>
+                        <ul className="divide-y divide-border/60">
+                          {items.map((goal) => goalCard(goal, routine))}
+                        </ul>
                         {routineDone ? (
                           <p className="mt-2 rounded-2xl bg-mint/50 px-3 py-2 text-center text-xs font-medium">
-                            🎉 Routine Complete! Great job showing up for yourself today.
+                            🎉 Routine Complete! Great job showing up for yourself.
                           </p>
                         ) : null}
                         <button
@@ -433,7 +553,16 @@ export function GoalsRoutines() {
         open={Boolean(addGoalFor)}
         onOpenChange={(value) => !value && setAddGoalFor(null)}
         context={addGoalFor?.routine?.title}
-        busy={addGoals.isPending}
+        busy={addGoals.isPending || linkGoals.isPending}
+        existingGoals={standalone}
+        {...(addGoalFor?.routine
+          ? {
+              onLinkExisting: async (goalIds: string[]) => {
+                const routineId = addGoalFor.routine?.id;
+                if (routineId) await linkGoals.mutateAsync({ routineId, goalIds });
+              },
+            }
+          : {})}
         onAdd={async (inputs) => {
           await addGoals.mutateAsync({ inputs, routineId: addGoalFor?.routine?.id ?? null });
         }}
@@ -478,7 +607,8 @@ export function GoalsRoutines() {
             </div>
             {editGoal ? (
               <p className="text-xs text-muted-foreground">
-                Category: {categoryLabel(editGoal.category)}
+                Category: {categoryLabel(editGoal.category)} · {scheduleLabel(editGoal)} ·{" "}
+                {timeOfDayLabel(editGoal.time_of_day)}
               </p>
             ) : null}
           </div>
