@@ -15,9 +15,7 @@ import {
   ROUTINE_ICONS,
   routineIcon,
   STARTER_ROUTINES,
-  TIME_CATEGORIES,
   type RepeatType,
-  type RoutineTimeCategory,
   type SuggestedGoal,
 } from "@/lib/goals";
 import { haptic } from "@/lib/native/haptics";
@@ -41,7 +39,6 @@ export function RoutineSheet({
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [icon, setIcon] = useState("sunrise");
-  const [time, setTime] = useState<RoutineTimeCategory>("anytime");
   const [schedule, setSchedule] = useState<ScheduleValue>(() => defaultSchedule());
   const [starterGoals, setStarterGoals] = useState<SuggestedGoal[]>([]);
   const [customising, setCustomising] = useState(false);
@@ -51,7 +48,6 @@ export function RoutineSheet({
     setTitle(routine?.title ?? "");
     setDescription(routine?.description ?? "");
     setIcon(routine?.icon ?? "sunrise");
-    setTime((routine?.time_category as RoutineTimeCategory) ?? "anytime");
     setStarterGoals([]);
     setCustomising(Boolean(routine));
     setSchedule({
@@ -114,7 +110,6 @@ export function RoutineSheet({
                         setTitle(starter.title);
                         setDescription(starter.description);
                         setIcon(starter.icon);
-                        setTime(starter.time_category);
                         setStarterGoals(starter.goals);
                         setSchedule({
                           ...defaultSchedule(starter.time_category),
@@ -225,9 +220,6 @@ export function RoutineSheet({
                 </p>
               </div>
             ) : null}
-
-            {/* time_category kept in sync with the schedule's time of day */}
-            <input type="hidden" value={time} readOnly />
           </div>
         ) : null}
 
@@ -249,8 +241,6 @@ export function RoutineSheet({
             </Button>
           </div>
         ) : null}
-
-        <p className="sr-only">{TIME_CATEGORIES.length} time-of-day options available</p>
       </SheetContent>
     </Sheet>
   );
