@@ -1,7 +1,11 @@
 import { Check, ListChecks, Pencil, Star } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { ScheduleFields, defaultSchedule, type ScheduleValue } from "@/components/goals/ScheduleFields";
+import {
+  ScheduleFields,
+  defaultSchedule,
+  type ScheduleValue,
+} from "@/components/goals/ScheduleFields";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -132,7 +136,9 @@ export function AddGoalSheet({
 
         <div className="mt-2 flex gap-2">
           {tab("suggested", "Suggested", Star)}
-          {onLinkExisting && existingGoals.length > 0 ? tab("existing", "My Goals", ListChecks) : null}
+          {onLinkExisting && existingGoals.length > 0
+            ? tab("existing", "My Goals", ListChecks)
+            : null}
           {tab("custom", "Create New", Pencil)}
         </div>
 

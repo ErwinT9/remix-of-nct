@@ -203,7 +203,13 @@ export function GoalsRoutines() {
   });
 
   const addGoals = useMutation({
-    mutationFn: async ({ inputs, routineId }: { inputs: GoalInput[]; routineId: string | null }) => {
+    mutationFn: async ({
+      inputs,
+      routineId,
+    }: {
+      inputs: GoalInput[];
+      routineId: string | null;
+    }) => {
       const base = routineId ? goalsForRoutine(routineId).length : standalone.length;
       await goalsRepo.addGoals(userId, inputs, base, routineId);
     },
