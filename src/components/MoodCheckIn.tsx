@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Check, Sparkles } from "lucide-react";
 
@@ -8,8 +8,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { MOOD_ACTIONS, MOODS } from "@/lib/content";
 import { haptic } from "@/lib/native/haptics";
 import { cn } from "@/lib/utils";
-
-const PremiumSuccessAnimation = lazy(() => import("@/components/PremiumSuccessAnimation"));
 
 export type MoodCheckInResult = {
   mood: string;
@@ -283,15 +281,9 @@ export function MoodCheckIn({
 
         {step === 3 && (
           <div key="step-3" className="animate-rise space-y-5 text-center">
-            {viewOnly ? (
-              <span className="mx-auto flex size-16 items-center justify-center rounded-full bg-mint">
-                <Sparkles className="size-7 text-on-tint" aria-hidden />
-              </span>
-            ) : (
-              <Suspense fallback={<div className="mx-auto aspect-square w-[min(68vw,280px)]" />}>
-                <PremiumSuccessAnimation />
-              </Suspense>
-            )}
+            <span className="mx-auto flex size-16 items-center justify-center rounded-full bg-mint">
+              <Sparkles className="size-7 text-on-tint" aria-hidden />
+            </span>
             <div className="space-y-1.5">
               <DialogTitle className="text-xl">
                 {viewOnly ? t("mood.todaysCheckIn", "Today's check-in") : t("mood.proudTitle", "We are Proud of You!")}
