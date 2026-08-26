@@ -281,15 +281,9 @@ export function MoodCheckIn({
 
         {step === 3 && (
           <div key="step-3" className="animate-rise space-y-5 text-center">
-            {viewOnly ? (
-              <span className="mx-auto flex size-16 items-center justify-center rounded-full bg-mint">
-                <Sparkles className="size-7 text-on-tint" aria-hidden />
-              </span>
-            ) : (
-              <Suspense fallback={<div className="mx-auto aspect-square w-[min(68vw,280px)]" />}>
-                <PremiumSuccessAnimation />
-              </Suspense>
-            )}
+            <span className="mx-auto flex size-16 items-center justify-center rounded-full bg-mint">
+              <Sparkles className="size-7 text-on-tint" aria-hidden />
+            </span>
             <div className="space-y-1.5">
               <DialogTitle className="text-xl">
                 {viewOnly ? t("mood.todaysCheckIn", "Today's check-in") : t("mood.proudTitle", "We are Proud of You!")}
