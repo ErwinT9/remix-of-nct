@@ -183,7 +183,6 @@ export function MoodCheckIn({
       custom_intention: custom.trim() ? custom.trim() : null,
     });
     haptic.success();
-    void celebrate();
     setStep(3);
   };
 
