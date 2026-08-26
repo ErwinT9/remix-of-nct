@@ -171,48 +171,49 @@ export function scheduleLabel(schedule: Schedule): string {
 
 export type SuggestedGoal = { title: string; description?: string; category: GoalCategory };
 
-export const SUGGESTED_GOALS: { category: GoalCategory; label: string; goals: SuggestedGoal[] }[] = [
-  {
-    category: "no-contact",
-    label: "No Contact",
-    goals: [
-      { title: "Maintain no contact today", category: "no-contact" },
-      { title: "Don't check their social media", category: "no-contact" },
-      { title: "Don't reread old messages", category: "no-contact" },
-      { title: "Don't check their online status", category: "no-contact" },
-    ],
-  },
-  {
-    category: "emotional",
-    label: "Emotional Recovery",
-    goals: [
-      { title: "Complete today's mood check-in", category: "emotional" },
-      { title: "Read today's motivation", category: "emotional" },
-      { title: "Practice breathing for 5 minutes", category: "emotional" },
-      { title: "Write down one thing I'm grateful for", category: "emotional" },
-    ],
-  },
-  {
-    category: "self-care",
-    label: "Self-Care",
-    goals: [
-      { title: "Exercise for 20 minutes", category: "self-care" },
-      { title: "Spend time outdoors", category: "self-care" },
-      { title: "Drink enough water", category: "self-care" },
-      { title: "Get enough rest", category: "self-care" },
-    ],
-  },
-  {
-    category: "growth",
-    label: "Personal Growth",
-    goals: [
-      { title: "Work on a personal goal", category: "growth" },
-      { title: "Learn something new", category: "growth" },
-      { title: "Spend time on a hobby", category: "growth" },
-      { title: "Connect with a friend or family member", category: "growth" },
-    ],
-  },
-];
+export const SUGGESTED_GOALS: { category: GoalCategory; label: string; goals: SuggestedGoal[] }[] =
+  [
+    {
+      category: "no-contact",
+      label: "No Contact",
+      goals: [
+        { title: "Maintain no contact today", category: "no-contact" },
+        { title: "Don't check their social media", category: "no-contact" },
+        { title: "Don't reread old messages", category: "no-contact" },
+        { title: "Don't check their online status", category: "no-contact" },
+      ],
+    },
+    {
+      category: "emotional",
+      label: "Emotional Recovery",
+      goals: [
+        { title: "Complete today's mood check-in", category: "emotional" },
+        { title: "Read today's motivation", category: "emotional" },
+        { title: "Practice breathing for 5 minutes", category: "emotional" },
+        { title: "Write down one thing I'm grateful for", category: "emotional" },
+      ],
+    },
+    {
+      category: "self-care",
+      label: "Self-Care",
+      goals: [
+        { title: "Exercise for 20 minutes", category: "self-care" },
+        { title: "Spend time outdoors", category: "self-care" },
+        { title: "Drink enough water", category: "self-care" },
+        { title: "Get enough rest", category: "self-care" },
+      ],
+    },
+    {
+      category: "growth",
+      label: "Personal Growth",
+      goals: [
+        { title: "Work on a personal goal", category: "growth" },
+        { title: "Learn something new", category: "growth" },
+        { title: "Spend time on a hobby", category: "growth" },
+        { title: "Connect with a friend or family member", category: "growth" },
+      ],
+    },
+  ];
 
 export type StarterRoutine = {
   title: string;
