@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Check, Sparkles } from "lucide-react";
 
@@ -6,9 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { MOOD_ACTIONS, MOODS } from "@/lib/content";
-import { celebrate } from "@/lib/celebrate";
 import { haptic } from "@/lib/native/haptics";
 import { cn } from "@/lib/utils";
+
+const PremiumSuccessAnimation = lazy(() => import("@/components/PremiumSuccessAnimation"));
 
 export type MoodCheckInResult = {
   mood: string;
