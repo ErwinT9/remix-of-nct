@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Trash2 } from "lucide-react";
-import { type ReactNode, useState } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 
@@ -35,6 +35,7 @@ export function ActivityListScreen({
   suggestions = [],
   emptyText,
   illustration,
+  successAnimation,
 }: {
   title: string;
   subtitle: string;
@@ -48,6 +49,13 @@ export function ActivityListScreen({
   suggestions?: string[];
   emptyText: string;
   illustration?: ReactNode;
+  /**
+   * Optional Lottie/animation node shown centered on screen after a successful
+   * save. When provided, the success overlay is rendered for a few seconds on
+   * every successful add. Only pass this from features that want it (e.g. the
+   * Daily Journal), leaving all other consumers untouched.
+   */
+  successAnimation?: ReactNode;
 }) {
   const { t } = useTranslation();
   const { user } = useAuth();
@@ -55,6 +63,14 @@ export function ActivityListScreen({
   const queryClient = useQueryClient();
   const [main, setMain] = useState("");
   const [note, setNote] = useState("");
+  const [showSuccess, setShowSuccess] = useState(false);
+  const successTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (successTimer.current) clearTimeout(successTimer.current);
+    };
+  }, []);
 
   const items = useQuery({
     queryKey: [cacheKey, userId],
@@ -76,6 +92,11 @@ export function ActivityListScreen({
       setMain("");
       setNote("");
       haptic.success();
+      if (successAnimation) {
+        setShowSuccess(true);
+        if (successTimer.current) clearTimeout(successTimer.current);
+        successTimer.current = setTimeout(() => setShowSuccess(false), 4200);
+      }
     },
     onError: (error) => toast.error(humanizeError(error)),
   });
@@ -174,6 +195,17 @@ export function ActivityListScreen({
           </SoftCard>
         ))}
       </ul>
+
+      {showSuccess && successAnimation ? (
+        <div
+          role="status"
+          aria-live="polite"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-background/70 px-6 backdrop-blur-sm animate-fade-in"
+          onClick={() => setShowSuccess(false)}
+        >
+          {successAnimation}
+        </div>
+      ) : null}
     </AppShell>
   );
 }
