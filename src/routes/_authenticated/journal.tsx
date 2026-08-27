@@ -6,7 +6,8 @@ import { ActivityListScreen } from "@/components/ActivityListScreen";
 import { JournalIllustration } from "@/components/illustrations";
 import { journalRepo } from "@/data/repository";
 
-const JournalSuccessAnimation = lazy(() => import("@/components/JournalSuccessAnimation"));
+const importJournalSuccessAnimation = () => import("@/components/JournalSuccessAnimation");
+const JournalSuccessAnimation = lazy(importJournalSuccessAnimation);
 
 export const Route = createFileRoute("/_authenticated/journal")({
   head: () => ({
