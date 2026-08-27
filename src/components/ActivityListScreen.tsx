@@ -195,6 +195,17 @@ export function ActivityListScreen({
           </SoftCard>
         ))}
       </ul>
+
+      {showSuccess && successAnimation ? (
+        <div
+          role="status"
+          aria-live="polite"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-background/70 px-6 backdrop-blur-sm animate-fade-in"
+          onClick={() => setShowSuccess(false)}
+        >
+          {successAnimation}
+        </div>
+      ) : null}
     </AppShell>
   );
 }
