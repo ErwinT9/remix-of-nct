@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 
 import { ActivityListScreen } from "@/components/ActivityListScreen";
 import { JournalIllustration } from "@/components/illustrations";
