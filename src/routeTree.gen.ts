@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AnimTestRouteImport } from './routes/anim-test'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as PaywallRouteImport } from './routes/paywall'
 import { Route as PrivacyRouteImport } from './routes/privacy'
@@ -54,6 +55,11 @@ const IndexRoute = IndexRouteImport.update({
 } as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnimTestRoute = AnimTestRouteImport.update({
+  id: '/anim-test',
+  path: '/anim-test',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -252,6 +258,7 @@ const ApiPublicHooksPushSchedulerRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/anim-test': typeof AnimTestRoute
   '/auth': typeof AuthRoute
   '/paywall': typeof PaywallRoute
   '/privacy': typeof PrivacyRoute
@@ -290,6 +297,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/anim-test': typeof AnimTestRoute
   '/auth': typeof AuthRoute
   '/paywall': typeof PaywallRoute
   '/privacy': typeof PrivacyRoute
@@ -330,6 +338,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/anim-test': typeof AnimTestRoute
   '/auth': typeof AuthRoute
   '/paywall': typeof PaywallRoute
   '/privacy': typeof PrivacyRoute
@@ -370,6 +379,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/anim-test'
     | '/auth'
     | '/paywall'
     | '/privacy'
@@ -408,6 +418,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/anim-test'
     | '/auth'
     | '/paywall'
     | '/privacy'
@@ -447,6 +458,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/anim-test'
     | '/auth'
     | '/paywall'
     | '/privacy'
@@ -487,6 +499,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AnimTestRoute: typeof AnimTestRoute
   AuthRoute: typeof AuthRoute
   PaywallRoute: typeof PaywallRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -509,6 +522,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/anim-test': {
+      id: '/anim-test'
+      path: '/anim-test'
+      fullPath: '/anim-test'
+      preLoaderRoute: typeof AnimTestRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -834,6 +854,7 @@ const AuthenticatedRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AnimTestRoute: AnimTestRoute,
   AuthRoute: AuthRoute,
   PaywallRoute: PaywallRoute,
   PrivacyRoute: PrivacyRoute,
