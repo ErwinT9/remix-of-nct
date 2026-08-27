@@ -1,9 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
+import { lazy, Suspense } from "react";
 
 import { ActivityListScreen } from "@/components/ActivityListScreen";
 import { JournalIllustration } from "@/components/illustrations";
 import { journalRepo } from "@/data/repository";
+
+const JournalSuccessAnimation = lazy(() => import("@/components/JournalSuccessAnimation"));
 
 export const Route = createFileRoute("/_authenticated/journal")({
   head: () => ({
@@ -29,6 +32,11 @@ export const Route = createFileRoute("/_authenticated/journal")({
         notePlaceholder={t("journal.notePlaceholder")}
         multiline
         emptyText={t("journal.emptyText")}
+        successAnimation={
+          <Suspense fallback={null}>
+            <JournalSuccessAnimation />
+          </Suspense>
+        }
       />
     );
   },
