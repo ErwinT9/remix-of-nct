@@ -1,12 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 
 import { ActivityListScreen } from "@/components/ActivityListScreen";
 import { JournalIllustration } from "@/components/illustrations";
 import { journalRepo } from "@/data/repository";
 
-const JournalSuccessAnimation = lazy(() => import("@/components/JournalSuccessAnimation"));
+const importJournalSuccessAnimation = () => import("@/components/JournalSuccessAnimation");
+const JournalSuccessAnimation = lazy(importJournalSuccessAnimation);
 
 export const Route = createFileRoute("/_authenticated/journal")({
   head: () => ({
@@ -19,6 +20,10 @@ export const Route = createFileRoute("/_authenticated/journal")({
   }),
   component: () => {
     const { t } = useTranslation();
+    // Warm the animation chunk so the overlay shows instantly on the first save.
+    useEffect(() => {
+      void importJournalSuccessAnimation().catch(() => {});
+    }, []);
     return (
       <ActivityListScreen
         title={t("journal.title")}
