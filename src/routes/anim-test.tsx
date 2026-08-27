@@ -1,18 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense } from "react";
+import { ActivityListScreen } from "@/components/ActivityListScreen";
 const A = lazy(() => import("@/components/JournalSuccessAnimation"));
+const repo = {
+  list: async () => [],
+  save: async () => [{ id: "1", created_at: new Date().toISOString(), body: "x" }],
+  remove: async () => [],
+};
 export const Route = createFileRoute("/anim-test")({
-  component: () => {
-    const [s, setS] = useState(false);
-    return (
-      <div>
-        <button data-testid="go" onClick={() => setS(true)}>go</button>
-        {s ? (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/70">
-            <Suspense fallback={null}><A /></Suspense>
-          </div>
-        ) : null}
-      </div>
-    );
-  },
+  component: () => (
+    <ActivityListScreen
+      title="t" subtitle="s" cacheKey="journal" repo={repo}
+      mainField="body" mainPlaceholder="ph" multiline emptyText="empty"
+      successAnimation={<Suspense fallback={null}><A /></Suspense>}
+    />
+  ),
 });
