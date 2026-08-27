@@ -92,6 +92,11 @@ export function ActivityListScreen({
       setMain("");
       setNote("");
       haptic.success();
+      if (successAnimation) {
+        setShowSuccess(true);
+        if (successTimer.current) clearTimeout(successTimer.current);
+        successTimer.current = setTimeout(() => setShowSuccess(false), 4200);
+      }
     },
     onError: (error) => toast.error(humanizeError(error)),
   });
