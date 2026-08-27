@@ -63,6 +63,14 @@ export function ActivityListScreen({
   const queryClient = useQueryClient();
   const [main, setMain] = useState("");
   const [note, setNote] = useState("");
+  const [showSuccess, setShowSuccess] = useState(false);
+  const successTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (successTimer.current) clearTimeout(successTimer.current);
+    };
+  }, []);
 
   const items = useQuery({
     queryKey: [cacheKey, userId],
