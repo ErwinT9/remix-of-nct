@@ -20,6 +20,10 @@ export const Route = createFileRoute("/_authenticated/journal")({
   }),
   component: () => {
     const { t } = useTranslation();
+    // Warm the animation chunk so the overlay shows instantly on the first save.
+    useEffect(() => {
+      void importJournalSuccessAnimation().catch(() => {});
+    }, []);
     return (
       <ActivityListScreen
         title={t("journal.title")}
