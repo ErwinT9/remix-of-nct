@@ -85,17 +85,27 @@ export function ActivityListScreen({
       return repo.save(userId, payload);
     },
     onSuccess: (rows) => {
-      queryClient.setQueryData([cacheKey, userId], rows);
-      if ((TRACKED_FEATURES as readonly string[]).includes(cacheKey)) {
-        activity.featureUsed(cacheKey as (typeof TRACKED_FEATURES)[number]);
-      }
-      setMain("");
-      setNote("");
-      haptic.success();
+      // Trigger the success overlay first so no side effect below can throw
+      // before the animation state is set.
       if (successAnimation) {
         setShowSuccess(true);
         if (successTimer.current) clearTimeout(successTimer.current);
         successTimer.current = setTimeout(() => setShowSuccess(false), 4200);
+      }
+      setMain("");
+      setNote("");
+      queryClient.setQueryData([cacheKey, userId], rows);
+      try {
+        if ((TRACKED_FEATURES as readonly string[]).includes(cacheKey)) {
+          activity.featureUsed(cacheKey as (typeof TRACKED_FEATURES)[number]);
+        }
+      } catch {
+        /* badge tracking must never block the success animation */
+      }
+      try {
+        haptic.success();
+      } catch {
+        /* haptics are best-effort */
       }
     },
     onError: (error) => toast.error(humanizeError(error)),
