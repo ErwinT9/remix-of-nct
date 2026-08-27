@@ -35,6 +35,7 @@ export function ActivityListScreen({
   suggestions = [],
   emptyText,
   illustration,
+  successAnimation,
 }: {
   title: string;
   subtitle: string;
@@ -48,6 +49,13 @@ export function ActivityListScreen({
   suggestions?: string[];
   emptyText: string;
   illustration?: ReactNode;
+  /**
+   * Optional Lottie/animation node shown centered on screen after a successful
+   * save. When provided, the success overlay is rendered for a few seconds on
+   * every successful add. Only pass this from features that want it (e.g. the
+   * Daily Journal), leaving all other consumers untouched.
+   */
+  successAnimation?: ReactNode;
 }) {
   const { t } = useTranslation();
   const { user } = useAuth();
