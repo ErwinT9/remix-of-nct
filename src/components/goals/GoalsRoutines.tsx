@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import {
+  Bell,
   Check,
   ChevronDown,
   ChevronLeft,
@@ -10,11 +11,16 @@ import {
   Sprout,
   Target,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { SoftCard } from "@/components/SoftCard";
 import { AddGoalSheet } from "@/components/goals/AddGoalSheet";
 import { RoutineSheet } from "@/components/goals/RoutineSheet";
+import {
+  ScheduleFields,
+  defaultSchedule,
+  type ScheduleValue,
+} from "@/components/goals/ScheduleFields";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -47,6 +53,7 @@ import { useAuth } from "@/hooks/useAuth";
 import {
   categoryLabel,
   dayKey,
+  formatTime12,
   friendlyDay,
   goalShortcut,
   isActiveOn,
@@ -54,8 +61,11 @@ import {
   scheduleLabel,
   shiftDay,
   timeOfDayLabel,
+  type RepeatType,
 } from "@/lib/goals";
 import { haptic } from "@/lib/native/haptics";
+import { requestNotificationPermissionStatus } from "@/lib/notifications";
+import { syncGoalReminders, type ReminderItem } from "@/lib/notifications/goalReminders";
 import { cn } from "@/lib/utils";
 
 function GoalRow({
@@ -103,6 +113,11 @@ function GoalRow({
           {scheduleLabel(goal)} · {timeOfDayLabel(goal.time_of_day)}
           {shared ? " · also in a routine" : ""}
         </p>
+        {goal.reminder_enabled && goal.reminder_time ? (
+          <p className="mt-0.5 flex items-center gap-1 text-xs text-primary">
+            <Bell className="size-3" aria-hidden /> {formatTime12(goal.reminder_time)}
+          </p>
+        ) : null}
         {goal.description ? (
           <p className="mt-0.5 text-xs text-muted-foreground">{goal.description}</p>
         ) : null}
@@ -148,6 +163,7 @@ export function GoalsRoutines() {
   const [editGoal, setEditGoal] = useState<Goal | null>(null);
   const [editTitle, setEditTitle] = useState("");
   const [editDescription, setEditDescription] = useState("");
+  const [editSchedule, setEditSchedule] = useState<ScheduleValue>(() => defaultSchedule());
   const [deleteRoutine, setDeleteRoutine] = useState<Routine | null>(null);
   const [expanded, setExpanded] = useState<string[]>([]);
 
@@ -268,6 +284,35 @@ export function GoalsRoutines() {
   const isEmpty = goals.length === 0 && routines.length === 0;
   const isToday = date === dayKey();
 
+  // Rebuild local reminders whenever goals or routines change. This cancels the
+  // previous plan first, so edits, disables and deletes never leave duplicates.
+  const reminderSignature = JSON.stringify(
+    [...routines, ...goals].map((item) => [
+      item.id,
+      item.title,
+      item.reminder_enabled,
+      item.reminder_time,
+      item.start_date,
+      item.end_date,
+      item.repeat_type,
+      item.repeat_days,
+      item.is_paused,
+    ]),
+  );
+
+  useEffect(() => {
+    const items: ReminderItem[] = [
+      ...routines.map((routine) => ({ ...routine, kind: "routine" as const })),
+      ...goals.map((goal) => ({ ...goal, kind: "goal" as const })),
+    ];
+    const needsPermission = items.some((item) => item.reminder_enabled && item.reminder_time);
+    void (async () => {
+      if (needsPermission) await requestNotificationPermissionStatus();
+      await syncGoalReminders(items);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reminderSignature]);
+
   const goalCard = (goal: Goal, routine?: Routine) => (
     <GoalRow
       key={`${routine?.id ?? "solo"}-${goal.id}`}
@@ -282,6 +327,16 @@ export function GoalsRoutines() {
         setEditGoal(goal);
         setEditTitle(goal.title);
         setEditDescription(goal.description ?? "");
+        setEditSchedule({
+          start_date: goal.start_date,
+          end_date: goal.end_date,
+          time_of_day: goal.time_of_day,
+          repeat_type: (goal.repeat_type as RepeatType) ?? "daily",
+          repeat_days: goal.repeat_days ?? [],
+          reminder_enabled: goal.reminder_enabled ?? false,
+          reminder_time: goal.reminder_time,
+          reminder_timezone: goal.reminder_timezone,
+        });
       }}
       onDelete={() => removeGoal.mutate(goal.id)}
       {...(routine
@@ -449,6 +504,12 @@ export function GoalsRoutines() {
                         <span className="mt-0.5 block text-xs text-muted-foreground">
                           {scheduleLabel(routine)} · {timeOfDayLabel(routine.time_of_day)}
                         </span>
+                        {routine.reminder_enabled && routine.reminder_time ? (
+                          <span className="mt-0.5 flex items-center gap-1 text-xs text-primary">
+                            <Bell className="size-3" aria-hidden />{" "}
+                            {formatTime12(routine.reminder_time)}
+                          </span>
+                        ) : null}
                         {routine.description ? (
                           <span className="mt-0.5 block text-xs text-muted-foreground">
                             {routine.description}
@@ -589,7 +650,7 @@ export function GoalsRoutines() {
       />
 
       <Dialog open={Boolean(editGoal)} onOpenChange={(value) => !value && setEditGoal(null)}>
-        <DialogContent className="max-w-sm rounded-3xl">
+        <DialogContent className="max-h-[86vh] max-w-sm overflow-y-auto rounded-3xl">
           <DialogHeader>
             <DialogTitle>Edit goal</DialogTitle>
           </DialogHeader>
@@ -613,10 +674,12 @@ export function GoalsRoutines() {
             </div>
             {editGoal ? (
               <p className="text-xs text-muted-foreground">
-                Category: {categoryLabel(editGoal.category)} · {scheduleLabel(editGoal)} ·{" "}
-                {timeOfDayLabel(editGoal.time_of_day)}
+                Category: {categoryLabel(editGoal.category)}
               </p>
             ) : null}
+            <div className="border-t border-border pt-4">
+              <ScheduleFields value={editSchedule} onChange={setEditSchedule} />
+            </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setEditGoal(null)}>
@@ -628,7 +691,18 @@ export function GoalsRoutines() {
                 if (!editGoal) return;
                 saveGoal.mutate({
                   goalId: editGoal.id,
-                  patch: { title: editTitle, description: editDescription },
+                  patch: {
+                    title: editTitle,
+                    description: editDescription,
+                    start_date: editSchedule.start_date,
+                    end_date: editSchedule.end_date,
+                    time_of_day: editSchedule.time_of_day,
+                    repeat_type: editSchedule.repeat_type,
+                    repeat_days: editSchedule.repeat_days,
+                    reminder_enabled: editSchedule.reminder_enabled,
+                    reminder_time: editSchedule.reminder_time,
+                    reminder_timezone: editSchedule.reminder_timezone,
+                  },
                 });
                 setEditGoal(null);
               }}

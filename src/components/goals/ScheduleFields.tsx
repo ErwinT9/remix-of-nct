@@ -1,9 +1,14 @@
-import { CalendarDays } from "lucide-react";
+import { Bell, CalendarDays } from "lucide-react";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import {
   dayKey,
+  defaultReminderTime,
+  deviceTimezoneName,
+  formatTime12,
+  REMINDER_PRESETS,
   longDay,
   REPEAT_OPTIONS,
   shiftDay,
@@ -20,6 +25,10 @@ export type ScheduleValue = {
   time_of_day: string;
   repeat_type: RepeatType;
   repeat_days: number[];
+  reminder_enabled: boolean;
+  /** Local "HH:MM" (24h). Null while reminders are off. */
+  reminder_time: string | null;
+  reminder_timezone: string | null;
 };
 
 export function defaultSchedule(timeOfDay = "anytime"): ScheduleValue {
@@ -29,6 +38,9 @@ export function defaultSchedule(timeOfDay = "anytime"): ScheduleValue {
     time_of_day: timeOfDay,
     repeat_type: "none",
     repeat_days: [],
+    reminder_enabled: false,
+    reminder_time: null,
+    reminder_timezone: null,
   };
 }
 
@@ -165,6 +177,67 @@ export function ScheduleFields({
                 className="h-10 w-auto flex-1 rounded-2xl text-sm"
               />
             </div>
+          </div>
+        ) : null}
+      </div>
+
+      <div className="space-y-2 border-t border-border pt-4">
+        <div className="flex items-center justify-between gap-3">
+          <Label htmlFor="remind-me" className="flex items-center gap-2">
+            <Bell className="size-4 text-primary" aria-hidden /> Remind me
+          </Label>
+          <Switch
+            id="remind-me"
+            checked={value.reminder_enabled}
+            onCheckedChange={(checked) =>
+              patch({
+                reminder_enabled: checked,
+                reminder_time: checked
+                  ? (value.reminder_time ?? defaultReminderTime(value.time_of_day))
+                  : null,
+                reminder_timezone: checked ? deviceTimezoneName() : null,
+              })
+            }
+          />
+        </div>
+
+        {value.reminder_enabled ? (
+          <div className="space-y-2 pt-1">
+            <div className="flex flex-wrap gap-2">
+              {REMINDER_PRESETS.map((preset) => (
+                <button
+                  key={preset.id}
+                  type="button"
+                  className={chip(value.reminder_time === preset.time)}
+                  onClick={() =>
+                    patch({ reminder_time: preset.time, reminder_timezone: deviceTimezoneName() })
+                  }
+                >
+                  {preset.label} · {formatTime12(preset.time)}
+                </button>
+              ))}
+            </div>
+            <label className="flex items-center gap-2 rounded-2xl border border-border px-3 py-2">
+              <span className="text-xs text-muted-foreground">Exact time</span>
+              <Input
+                type="time"
+                step={60}
+                value={value.reminder_time ?? ""}
+                onChange={(event) =>
+                  onChange({
+                    ...value,
+                    reminder_time: event.target.value || null,
+                    reminder_timezone: deviceTimezoneName(),
+                  })
+                }
+                className="h-9 flex-1 border-0 bg-transparent p-0 text-right text-sm shadow-none focus-visible:ring-0"
+              />
+            </label>
+            <p className="text-xs text-muted-foreground">
+              {value.reminder_time
+                ? `We'll send one gentle nudge at ${formatTime12(value.reminder_time)}, following your schedule above.`
+                : "Pick a time for your reminder."}
+            </p>
           </div>
         ) : null}
       </div>

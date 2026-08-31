@@ -315,3 +315,62 @@ const LINKS: { match: RegExp; to: string; label: string }[] = [
 export function goalShortcut(title: string): { to: string; label: string } | null {
   return LINKS.find((link) => link.match.test(title)) ?? null;
 }
+
+/* ------------------------------------------------------------------ */
+/* Reminders                                                           */
+/* ------------------------------------------------------------------ */
+
+export type ReminderValue = {
+  reminder_enabled: boolean;
+  /** Local "HH:MM" (24h) reminder time, null when reminders are off. */
+  reminder_time: string | null;
+  reminder_timezone: string | null;
+};
+
+export const REMINDER_PRESETS: { id: string; label: string; time: string }[] = [
+  { id: "morning", label: "Morning", time: "09:00" },
+  { id: "afternoon", label: "Afternoon", time: "13:00" },
+  { id: "evening", label: "Evening", time: "20:00" },
+  { id: "night", label: "Night", time: "22:00" },
+];
+
+/** Sensible default reminder time for a chosen time-of-day bucket. */
+export function defaultReminderTime(timeOfDay: string | null | undefined): string {
+  return REMINDER_PRESETS.find((item) => item.id === timeOfDay)?.time ?? "09:00";
+}
+
+/** "17:05" -> "5:05 PM". */
+export function formatTime12(value: string | null | undefined): string {
+  if (!value) return "";
+  const [rawHour, rawMinute] = value.split(":");
+  const hour = Number(rawHour);
+  const minute = Number(rawMinute ?? 0);
+  if (Number.isNaN(hour) || Number.isNaN(minute)) return "";
+  const suffix = hour >= 12 ? "PM" : "AM";
+  const display = hour % 12 === 0 ? 12 : hour % 12;
+  return `${display}:${pad(minute)} ${suffix}`;
+}
+
+export function minutesOfTime(value: string): number {
+  const [hour, minute] = value.split(":").map(Number);
+  return (hour || 0) * 60 + (minute || 0);
+}
+
+/** Local calendar dates within the next `days` on which the item is active. */
+export function upcomingActiveDates(schedule: Schedule, days = 14): string[] {
+  const today = dayKey();
+  const dates: string[] = [];
+  for (let offset = 0; offset < days; offset += 1) {
+    const date = shiftDay(today, offset);
+    if (isActiveOn(schedule, date)) dates.push(date);
+  }
+  return dates;
+}
+
+export function deviceTimezoneName(): string {
+  try {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+  } catch {
+    return "UTC";
+  }
+}
