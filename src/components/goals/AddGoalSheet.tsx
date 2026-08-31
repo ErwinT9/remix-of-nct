@@ -84,6 +84,9 @@ export function AddGoalSheet({
       time_of_day: schedule.time_of_day,
       repeat_type: schedule.repeat_type,
       repeat_days: schedule.repeat_days,
+      reminder_enabled: schedule.reminder_enabled,
+      reminder_time: schedule.reminder_time,
+      reminder_timezone: schedule.reminder_timezone,
     };
     if (mode === "existing") {
       if (pickedExisting.length === 0) return;

@@ -56,6 +56,9 @@ export function RoutineSheet({
       time_of_day: routine?.time_of_day ?? routine?.time_category ?? "anytime",
       repeat_type: (routine?.repeat_type as RepeatType) ?? "daily",
       repeat_days: routine?.repeat_days ?? [],
+      reminder_enabled: routine?.reminder_enabled ?? false,
+      reminder_time: routine?.reminder_time ?? null,
+      reminder_timezone: routine?.reminder_timezone ?? null,
     });
   }, [open, routine]);
 
@@ -73,6 +76,9 @@ export function RoutineSheet({
           time_of_day: schedule.time_of_day,
           repeat_type: schedule.repeat_type,
           repeat_days: schedule.repeat_days,
+          reminder_enabled: schedule.reminder_enabled,
+          reminder_time: schedule.reminder_time,
+          reminder_timezone: schedule.reminder_timezone,
         },
         starterGoals.map((goal) => ({ ...goal, is_custom: false })),
       ),
