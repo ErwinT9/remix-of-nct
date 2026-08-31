@@ -199,6 +199,9 @@ export type Database = {
           id: string
           is_custom: boolean
           is_paused: boolean
+          reminder_enabled: boolean
+          reminder_time: string | null
+          reminder_timezone: string | null
           repeat_days: number[]
           repeat_type: string
           routine_id: string | null
@@ -217,6 +220,9 @@ export type Database = {
           id?: string
           is_custom?: boolean
           is_paused?: boolean
+          reminder_enabled?: boolean
+          reminder_time?: string | null
+          reminder_timezone?: string | null
           repeat_days?: number[]
           repeat_type?: string
           routine_id?: string | null
@@ -235,6 +241,9 @@ export type Database = {
           id?: string
           is_custom?: boolean
           is_paused?: boolean
+          reminder_enabled?: boolean
+          reminder_time?: string | null
+          reminder_timezone?: string | null
           repeat_days?: number[]
           repeat_type?: string
           routine_id?: string | null
@@ -828,6 +837,9 @@ export type Database = {
           id: string
           is_paused: boolean
           is_starter: boolean
+          reminder_enabled: boolean
+          reminder_time: string | null
+          reminder_timezone: string | null
           repeat_days: number[]
           repeat_type: string
           sort_order: number
@@ -846,6 +858,9 @@ export type Database = {
           id?: string
           is_paused?: boolean
           is_starter?: boolean
+          reminder_enabled?: boolean
+          reminder_time?: string | null
+          reminder_timezone?: string | null
           repeat_days?: number[]
           repeat_type?: string
           sort_order?: number
@@ -864,6 +879,9 @@ export type Database = {
           id?: string
           is_paused?: boolean
           is_starter?: boolean
+          reminder_enabled?: boolean
+          reminder_time?: string | null
+          reminder_timezone?: string | null
           repeat_days?: number[]
           repeat_type?: string
           sort_order?: number
