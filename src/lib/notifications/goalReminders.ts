@@ -86,11 +86,12 @@ export function planReminders(items: ReminderItem[], now: Date = new Date()): Pl
       // A routine reminder speaks for the routine; goals inside it only fire
       // when they carry their own reminder, so nothing is duplicated here.
       const titles = group.map((item) => item.title);
-      const kind: "goal" | "routine" =
-        routines.length === group.length ? "routine" : "goal";
+      const kind: "goal" | "routine" = routines.length === group.length ? "routine" : "goal";
       const title =
         group.length === 1
-          ? (group[0]?.kind === "routine" ? "Routine reminder" : "Goal reminder")
+          ? group[0]?.kind === "routine"
+            ? "Routine reminder"
+            : "Goal reminder"
           : `${group.length} reminders`;
 
       plans.push({

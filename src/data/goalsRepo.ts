@@ -96,9 +96,7 @@ function schedulePatch(input: ScheduleInput) {
       ? {
           reminder_enabled: input.reminder_enabled,
           reminder_time: input.reminder_enabled ? (input.reminder_time ?? null) : null,
-          reminder_timezone: input.reminder_enabled
-            ? (input.reminder_timezone ?? null)
-            : null,
+          reminder_timezone: input.reminder_enabled ? (input.reminder_timezone ?? null) : null,
         }
       : {
           ...(input.reminder_time !== undefined ? { reminder_time: input.reminder_time } : {}),
