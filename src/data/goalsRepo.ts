@@ -70,6 +70,7 @@ export type RoutineInput = {
 } & ScheduleInput;
 
 function scheduleColumns(input: ScheduleInput) {
+  const enabled = input.reminder_enabled ?? false;
   return {
     start_date: input.start_date ?? dayKey(),
     end_date: input.end_date ?? null,
@@ -77,6 +78,9 @@ function scheduleColumns(input: ScheduleInput) {
     repeat_type: input.repeat_type ?? "daily",
     repeat_days: input.repeat_days ?? [],
     is_paused: input.is_paused ?? false,
+    reminder_enabled: enabled,
+    reminder_time: enabled ? (input.reminder_time ?? null) : null,
+    reminder_timezone: enabled ? (input.reminder_timezone ?? null) : null,
   };
 }
 
@@ -88,6 +92,20 @@ function schedulePatch(input: ScheduleInput) {
     ...(input.repeat_type !== undefined ? { repeat_type: input.repeat_type } : {}),
     ...(input.repeat_days !== undefined ? { repeat_days: input.repeat_days } : {}),
     ...(input.is_paused !== undefined ? { is_paused: input.is_paused } : {}),
+    ...(input.reminder_enabled !== undefined
+      ? {
+          reminder_enabled: input.reminder_enabled,
+          reminder_time: input.reminder_enabled ? (input.reminder_time ?? null) : null,
+          reminder_timezone: input.reminder_enabled
+            ? (input.reminder_timezone ?? null)
+            : null,
+        }
+      : {
+          ...(input.reminder_time !== undefined ? { reminder_time: input.reminder_time } : {}),
+          ...(input.reminder_timezone !== undefined
+            ? { reminder_timezone: input.reminder_timezone }
+            : {}),
+        }),
   };
 }
 
