@@ -8,6 +8,9 @@ export type ScheduleFields = {
   repeat_type: string;
   repeat_days: number[];
   is_paused: boolean;
+  reminder_enabled: boolean;
+  reminder_time: string | null;
+  reminder_timezone: string | null;
 };
 
 export type Routine = {
