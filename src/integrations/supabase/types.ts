@@ -95,6 +95,69 @@ export type Database = {
         }
         Relationships: []
       }
+      bug_reports: {
+        Row: {
+          app_version: string | null
+          attachments: Json
+          category: string
+          client_ref: string
+          created_at: string
+          description: string
+          device_info: Json
+          expected_behavior: string | null
+          id: string
+          network_status: string | null
+          os_version: string | null
+          platform: string | null
+          reproduction_steps: string | null
+          severity: string
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          app_version?: string | null
+          attachments?: Json
+          category?: string
+          client_ref: string
+          created_at?: string
+          description: string
+          device_info?: Json
+          expected_behavior?: string | null
+          id?: string
+          network_status?: string | null
+          os_version?: string | null
+          platform?: string | null
+          reproduction_steps?: string | null
+          severity?: string
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          app_version?: string | null
+          attachments?: Json
+          category?: string
+          client_ref?: string
+          created_at?: string
+          description?: string
+          device_info?: Json
+          expected_behavior?: string | null
+          id?: string
+          network_status?: string | null
+          os_version?: string | null
+          platform?: string | null
+          reproduction_steps?: string | null
+          severity?: string
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       daily_promises: {
         Row: {
           created_at: string
