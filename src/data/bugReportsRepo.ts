@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import type { Json } from "@/integrations/supabase/types";
 import { collectDiagnostics, type Diagnostics } from "@/lib/diagnostics";
 import { storage } from "@/lib/native/storage";
 import { isOnline, subscribeNetwork } from "@/lib/offline/network";
@@ -162,8 +163,8 @@ async function insertReport(
     app_version: diagnostics.app_version,
     os_version: diagnostics.os_version,
     network_status: diagnostics.network_status,
-    device_info: diagnostics.device_info,
-    attachments,
+    device_info: diagnostics.device_info as Json,
+    attachments: attachments as unknown as Json,
     created_at: pending.created_at,
   });
   // A duplicate client_ref means the report already landed (retry/sync race).
