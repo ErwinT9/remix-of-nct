@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import {
+  Bug,
   CalendarClock,
   Crown,
   FileText,
@@ -128,6 +129,14 @@ export function MoreDrawer({
           const opened = await openFeedbackEmail();
           if (!opened) setNoEmailOpen(true);
         })();
+      },
+    },
+    {
+      icon: Bug,
+      label: t("drawer.submitBug", "Submit Bug"),
+      onClick: () => {
+        onOpenChange(false);
+        void navigate({ to: "/submit-bug" });
       },
     },
     {
