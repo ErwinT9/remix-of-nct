@@ -173,7 +173,151 @@ async function run(dryRun: boolean, onlyUserId?: string, force = false) {
       if (status === "sent") sent += 1;
       results.push({ user_id: profile.id, notification_id: id, title: entry.title, status, error: errorText });
     }
+
+    /* --------------------------------------------------------------- */
+    /* Goal & routine reminders (own id range, same delivery pipeline)   */
+    /* --------------------------------------------------------------- */
+    const [goalRows, routineRows] = await Promise.all([
+      supabaseAdmin
+        .from("goals")
+        .select(
+          "id, title, start_date, end_date, repeat_type, repeat_days, is_paused, reminder_enabled, reminder_time, reminder_timezone",
+        )
+        .eq("user_id", profile.id)
+        .eq("reminder_enabled", true)
+        .eq("is_paused", false),
+      supabaseAdmin
+        .from("routines")
+        .select(
+          "id, title, start_date, end_date, repeat_type, repeat_days, is_paused, reminder_enabled, reminder_time, reminder_timezone",
+        )
+        .eq("user_id", profile.id)
+        .eq("reminder_enabled", true)
+        .eq("is_paused", false),
+    ]);
+
+    const reminderRows: ReminderRow[] = [
+      ...((goalRows.data ?? []) as unknown as Omit<ReminderRow, "kind">[]).map((row) => ({
+        ...row,
+        kind: "goal" as const,
+      })),
+      ...((routineRows.data ?? []) as unknown as Omit<ReminderRow, "kind">[]).map((row) => ({
+        ...row,
+        kind: "routine" as const,
+      })),
+    ];
+
+    const dueReminders = dueGoalReminders(reminderRows, profile.timezone);
+    if (dueReminders.length === 0) continue;
+
+    const { count: tokenCount } = await supabaseAdmin
+      .from("push_tokens")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", profile.id)
+      .eq("is_active", true);
+    if (!tokenCount) {
+      skipped += dueReminders.length;
+      continue;
+    }
+
+    // Goals already marked done for that local date get no nudge.
+    const goalIds = dueReminders.filter((r) => r.row.kind === "goal").map((r) => r.row.id);
+    const completed = new Set<string>();
+    if (goalIds.length > 0) {
+      const { data: completionRows } = await supabaseAdmin
+        .from("goal_completions")
+        .select("goal_id, completion_date, completed")
+        .eq("user_id", profile.id)
+        .in("goal_id", goalIds)
+        .eq("completed", true);
+      for (const row of (completionRows ?? []) as unknown as {
+        goal_id: string;
+        completion_date: string;
+      }[]) {
+        const match = dueReminders.find((r) => r.row.id === row.goal_id);
+        if (match && match.localDate === row.completion_date) completed.add(row.goal_id);
+      }
+    }
+
+    for (const { row, localDate, time } of dueReminders) {
+      if (completed.has(row.id)) {
+        skipped += 1;
+        continue;
+      }
+
+      const id = goalReminderNotificationId(row.id);
+      if (dryRun) {
+        results.push({ user_id: profile.id, notification_id: id, title: row.title, dry_run: true });
+        continue;
+      }
+
+      const { error: claimError } = await supabaseAdmin.from("notification_history").insert({
+        user_id: profile.id,
+        category: "reminder",
+        notification_id: id,
+        local_date: localDate,
+        scheduled_local_time: time,
+        status: "pending",
+      } as never);
+      if (claimError) {
+        skipped += 1;
+        continue;
+      }
+
+      let status = "sent";
+      let errorText: string | null = null;
+      try {
+        const response = await fetch(`${supabaseUrl}/functions/v1/send-push-notification`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${serviceRoleKey}`,
+            apikey: serviceRoleKey,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            user_id: profile.id,
+            title: row.kind === "routine" ? "Routine reminder" : "Goal reminder",
+            body: reminderBody(row),
+            data: {
+              deep_link: "/motivation/journey",
+              category: "Reminder",
+              [row.kind === "routine" ? "routine_id" : "goal_id"]: row.id,
+            },
+          }),
+        });
+        const payload = (await response.json().catch(() => ({}))) as {
+          sent?: number;
+          error?: string;
+          message?: string;
+        };
+        if (!response.ok || !payload.sent) {
+          status = "failed";
+          errorText = payload.error ?? payload.message ?? `HTTP ${response.status}`;
+        }
+      } catch (err) {
+        status = "failed";
+        errorText = (err as Error).message;
+      }
+
+      await supabaseAdmin
+        .from("notification_history")
+        .update({ status, error: errorText, sent_at: new Date().toISOString() } as never)
+        .eq("user_id", profile.id)
+        .eq("notification_id", id)
+        .eq("local_date", localDate);
+
+      if (status === "sent") sent += 1;
+      results.push({
+        user_id: profile.id,
+        notification_id: id,
+        title: row.title,
+        kind: row.kind,
+        status,
+        error: errorText,
+      });
+    }
   }
+
 
   return json({ ok: true, checked: profiles.length, sent, skipped, results });
 }
