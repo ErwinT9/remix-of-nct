@@ -206,15 +206,21 @@
 
   /* Hide scrollbars app-wide (all elements, incl. dynamically loaded screens)
      while keeping scrolling fully functional. */
-  * {
+  *,
+  html,
+  body {
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
 
-  *::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-    display: none;
+  *::-webkit-scrollbar,
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+    display: none !important;
+    background: transparent;
+    -webkit-appearance: none;
   }
 
   html,
