@@ -16,7 +16,6 @@ import {
   GOAL_CATEGORIES,
   SUGGESTED_GOALS,
   scheduleLabel,
-  timeOfDayLabel,
   type GoalCategory,
 } from "@/lib/goals";
 import { haptic } from "@/lib/native/haptics";
@@ -264,7 +263,7 @@ export function AddGoalSheet({
                       <span className="min-w-0 flex-1">
                         {goal.title}
                         <span className="mt-0.5 block text-xs text-muted-foreground">
-                          {scheduleLabel(goal)} · {timeOfDayLabel(goal.time_of_day)}
+                          {scheduleLabel(goal)}
                         </span>
                       </span>
                     </button>
