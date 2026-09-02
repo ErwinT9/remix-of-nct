@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { AlertTriangle, ArrowRight, BarChart3, HeartHandshake, Mail, Sparkles } from "lucide-react";
+import { AlertTriangle, ArrowRight, BarChart3, Compass, HeartHandshake, Mail, Sparkles, Wrench } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
