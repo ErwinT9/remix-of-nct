@@ -5,14 +5,11 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import {
   dayKey,
-  defaultReminderTime,
   deviceTimezoneName,
   formatTime12,
-  REMINDER_PRESETS,
   longDay,
   REPEAT_OPTIONS,
   shiftDay,
-  TIME_CATEGORIES,
   WEEKDAY_LABELS,
   type RepeatType,
 } from "@/lib/goals";
@@ -102,7 +99,6 @@ export function ScheduleFields({
         <p className="text-xs text-muted-foreground">Scheduled for {longDay(value.start_date)}</p>
       </div>
 
-
       <div className="space-y-2">
         <Label>🔄 Repeat</Label>
         <div className="flex flex-wrap gap-2">
@@ -177,9 +173,7 @@ export function ScheduleFields({
             onCheckedChange={(checked) =>
               patch({
                 reminder_enabled: checked,
-                reminder_time: checked
-                  ? (value.reminder_time ?? defaultReminderTime(value.time_of_day))
-                  : null,
+                reminder_time: checked ? (value.reminder_time ?? "09:00") : null,
                 reminder_timezone: checked ? deviceTimezoneName() : null,
               })
             }
@@ -189,7 +183,6 @@ export function ScheduleFields({
         {value.reminder_enabled ? (
           <div className="space-y-2 pt-1">
             <label className="flex items-center gap-2 rounded-2xl border border-border px-3 py-2">
-
               <span className="text-xs text-muted-foreground">Exact time</span>
               <Input
                 type="time"

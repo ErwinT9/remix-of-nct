@@ -18,7 +18,6 @@ import {
   SCHEDULE,
 } from "@/lib/notifications/schedule";
 
-
 /**
  * The single scheduler for the 30-day push cycle (120 notifications).
  *
@@ -109,7 +108,12 @@ async function run(dryRun: boolean, onlyUserId?: string, force = false) {
 
       const id = notificationId(entry);
       if (dryRun) {
-        results.push({ user_id: profile.id, notification_id: id, title: entry.title, dry_run: true });
+        results.push({
+          user_id: profile.id,
+          notification_id: id,
+          title: entry.title,
+          dry_run: true,
+        });
         continue;
       }
 
@@ -171,7 +175,13 @@ async function run(dryRun: boolean, onlyUserId?: string, force = false) {
         .eq("local_date", localDate);
 
       if (status === "sent") sent += 1;
-      results.push({ user_id: profile.id, notification_id: id, title: entry.title, status, error: errorText });
+      results.push({
+        user_id: profile.id,
+        notification_id: id,
+        title: entry.title,
+        status,
+        error: errorText,
+      });
     }
 
     /* --------------------------------------------------------------- */
@@ -317,7 +327,6 @@ async function run(dryRun: boolean, onlyUserId?: string, force = false) {
       });
     }
   }
-
 
   return json({ ok: true, checked: profiles.length, sent, skipped, results });
 }

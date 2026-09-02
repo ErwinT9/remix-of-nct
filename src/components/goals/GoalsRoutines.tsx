@@ -60,7 +60,6 @@ import {
   routineIcon,
   scheduleLabel,
   shiftDay,
-  timeOfDayLabel,
   type RepeatType,
 } from "@/lib/goals";
 import { haptic } from "@/lib/native/haptics";
@@ -110,7 +109,7 @@ function GoalRow({
           {goal.title}
         </p>
         <p className="mt-0.5 text-xs text-muted-foreground">
-          {scheduleLabel(goal)} · {timeOfDayLabel(goal.time_of_day)}
+          {scheduleLabel(goal)}
           {shared ? " · also in a routine" : ""}
         </p>
         {goal.reminder_enabled && goal.reminder_time ? (
@@ -502,7 +501,7 @@ export function GoalsRoutines() {
                       >
                         <span className="block font-semibold">{routine.title}</span>
                         <span className="mt-0.5 block text-xs text-muted-foreground">
-                          {scheduleLabel(routine)} · {timeOfDayLabel(routine.time_of_day)}
+                          {scheduleLabel(routine)}
                         </span>
                         {routine.reminder_enabled && routine.reminder_time ? (
                           <span className="mt-0.5 flex items-center gap-1 text-xs text-primary">
