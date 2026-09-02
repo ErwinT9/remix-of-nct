@@ -257,6 +257,36 @@ function HomeScreen() {
 
         <DailyTasks />
 
+        <Link to="/motivation" className="press block">
+          <SoftCard className="flex items-center gap-4">
+            <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-lavender">
+              <Compass className="size-5 text-on-tint" aria-hidden />
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="font-medium">Track Your Journey</p>
+              <p className="text-sm text-muted-foreground">
+                Journey, Goals & Routines to help you move forward.
+              </p>
+            </div>
+            <ArrowRight className="size-5 shrink-0 text-muted-foreground" aria-hidden />
+          </SoftCard>
+        </Link>
+
+        <Link to="/healing-tools" className="press block">
+          <SoftCard className="flex items-center gap-4">
+            <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-mint">
+              <Wrench className="size-5 text-on-tint" aria-hidden />
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="font-medium">Tools for Tough Moments</p>
+              <p className="text-sm text-muted-foreground">
+                Guides & other tools to help you reset.
+              </p>
+            </div>
+            <ArrowRight className="size-5 shrink-0 text-muted-foreground" aria-hidden />
+          </SoftCard>
+        </Link>
+
         <div className="grid grid-cols-3 gap-3">
           <Link to="/flags" className="press">
             <SoftCard className="bg-coral h-full text-center">
