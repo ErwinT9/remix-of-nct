@@ -239,38 +239,6 @@
       sans-serif;
   }
 
-  /* Safe-area gradient bands: painted behind content in the status-bar /
-     notch area and the navigation-bar / home-indicator area. Height adapts to
-     each device's insets; zero-inset devices render nothing. */
-  body::before,
-  body::after {
-    content: "";
-    position: fixed;
-    left: 0;
-    right: 0;
-    pointer-events: none;
-    z-index: 60;
-  }
-
-  body::before {
-    top: 0;
-    height: env(safe-area-inset-top, 0px);
-    background-image: linear-gradient(
-      to bottom,
-      var(--color-primary-soft),
-      color-mix(in oklab, var(--color-background) 85%, var(--color-primary-soft))
-    );
-  }
-
-  body::after {
-    bottom: 0;
-    height: env(safe-area-inset-bottom, 0px);
-    background-image: linear-gradient(
-      to top,
-      var(--color-primary-soft),
-      color-mix(in oklab, var(--color-background) 85%, var(--color-primary-soft))
-    );
-  }
 }
 
 
