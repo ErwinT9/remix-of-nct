@@ -23,6 +23,7 @@ import { Route as AuthenticatedChangeEmailRouteImport } from './routes/_authenti
 import { Route as AuthenticatedChangePasswordRouteImport } from './routes/_authenticated/change-password'
 import { Route as AuthenticatedCheckInRouteImport } from './routes/_authenticated/check-in'
 import { Route as AuthenticatedFlagsRouteImport } from './routes/_authenticated/flags'
+import { Route as AuthenticatedHealingToolsRouteImport } from './routes/_authenticated/healing-tools'
 import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
 import { Route as AuthenticatedJournalRouteImport } from './routes/_authenticated/journal'
 import { Route as AuthenticatedLettersRouteImport } from './routes/_authenticated/letters'
@@ -120,6 +121,12 @@ const AuthenticatedFlagsRoute = AuthenticatedFlagsRouteImport.update({
   path: '/flags',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedHealingToolsRoute =
+  AuthenticatedHealingToolsRouteImport.update({
+    id: '/healing-tools',
+    path: '/healing-tools',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedHomeRoute = AuthenticatedHomeRouteImport.update({
   id: '/home',
   path: '/home',
@@ -270,6 +277,7 @@ export interface FileRoutesByFullPath {
   '/change-password': typeof AuthenticatedChangePasswordRoute
   '/check-in': typeof AuthenticatedCheckInRoute
   '/flags': typeof AuthenticatedFlagsRoute
+  '/healing-tools': typeof AuthenticatedHealingToolsRoute
   '/home': typeof AuthenticatedHomeRoute
   '/journal': typeof AuthenticatedJournalRoute
   '/letters': typeof AuthenticatedLettersRoute
@@ -309,6 +317,7 @@ export interface FileRoutesByTo {
   '/change-password': typeof AuthenticatedChangePasswordRoute
   '/check-in': typeof AuthenticatedCheckInRoute
   '/flags': typeof AuthenticatedFlagsRoute
+  '/healing-tools': typeof AuthenticatedHealingToolsRoute
   '/home': typeof AuthenticatedHomeRoute
   '/journal': typeof AuthenticatedJournalRoute
   '/letters': typeof AuthenticatedLettersRoute
@@ -350,6 +359,7 @@ export interface FileRoutesById {
   '/_authenticated/change-password': typeof AuthenticatedChangePasswordRoute
   '/_authenticated/check-in': typeof AuthenticatedCheckInRoute
   '/_authenticated/flags': typeof AuthenticatedFlagsRoute
+  '/_authenticated/healing-tools': typeof AuthenticatedHealingToolsRoute
   '/_authenticated/home': typeof AuthenticatedHomeRoute
   '/_authenticated/journal': typeof AuthenticatedJournalRoute
   '/_authenticated/letters': typeof AuthenticatedLettersRoute
@@ -391,6 +401,7 @@ export interface FileRouteTypes {
     | '/change-password'
     | '/check-in'
     | '/flags'
+    | '/healing-tools'
     | '/home'
     | '/journal'
     | '/letters'
@@ -430,6 +441,7 @@ export interface FileRouteTypes {
     | '/change-password'
     | '/check-in'
     | '/flags'
+    | '/healing-tools'
     | '/home'
     | '/journal'
     | '/letters'
@@ -470,6 +482,7 @@ export interface FileRouteTypes {
     | '/_authenticated/change-password'
     | '/_authenticated/check-in'
     | '/_authenticated/flags'
+    | '/_authenticated/healing-tools'
     | '/_authenticated/home'
     | '/_authenticated/journal'
     | '/_authenticated/letters'
@@ -605,6 +618,13 @@ declare module '@tanstack/react-router' {
       path: '/flags'
       fullPath: '/flags'
       preLoaderRoute: typeof AuthenticatedFlagsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/healing-tools': {
+      id: '/_authenticated/healing-tools'
+      path: '/healing-tools'
+      fullPath: '/healing-tools'
+      preLoaderRoute: typeof AuthenticatedHealingToolsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/home': {
@@ -786,6 +806,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedChangePasswordRoute: typeof AuthenticatedChangePasswordRoute
   AuthenticatedCheckInRoute: typeof AuthenticatedCheckInRoute
   AuthenticatedFlagsRoute: typeof AuthenticatedFlagsRoute
+  AuthenticatedHealingToolsRoute: typeof AuthenticatedHealingToolsRoute
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
   AuthenticatedJournalRoute: typeof AuthenticatedJournalRoute
   AuthenticatedLettersRoute: typeof AuthenticatedLettersRoute
@@ -819,6 +840,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedChangePasswordRoute: AuthenticatedChangePasswordRoute,
   AuthenticatedCheckInRoute: AuthenticatedCheckInRoute,
   AuthenticatedFlagsRoute: AuthenticatedFlagsRoute,
+  AuthenticatedHealingToolsRoute: AuthenticatedHealingToolsRoute,
   AuthenticatedHomeRoute: AuthenticatedHomeRoute,
   AuthenticatedJournalRoute: AuthenticatedJournalRoute,
   AuthenticatedLettersRoute: AuthenticatedLettersRoute,
