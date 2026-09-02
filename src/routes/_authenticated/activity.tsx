@@ -171,7 +171,23 @@ function Activity() {
           <Flame className="size-5 text-on-tint" aria-hidden />
         </span>
         <span className="min-w-0">
-          <span className="block font-medium text-on-tint">Motivation</span>
+          <span className="block font-medium text-on-tint">Journey</span>
+          <span className="mt-1 block text-sm text-on-tint/80">
+            Small steps to help you heal, grow, and reconnect with yourself.
+          </span>
+        </span>
+      </Link>
+
+      <Link
+        to="/healing-tools"
+        onClick={() => haptic.select()}
+        className="press soft-card mt-3 flex items-start gap-3 rounded-3xl bg-lavender p-5"
+      >
+        <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-background/40">
+          <HeartHandshake className="size-5 text-on-tint" aria-hidden />
+        </span>
+        <span className="min-w-0">
+          <span className="block font-medium text-on-tint">Healing Tools</span>
           <span className="mt-1 block text-sm text-on-tint/80">
             A little reminder to keep choosing yourself.
           </span>

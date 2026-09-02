@@ -164,7 +164,7 @@ export function SosToolkit({
                       haptic.light();
                       if (key === "motivation") {
                         onOpenChange(false);
-                        void navigate({ to: "/motivation" });
+                        void navigate({ to: "/healing-tools" });
                         return;
                       }
                       setTool(key);
