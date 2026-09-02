@@ -102,21 +102,6 @@ export function ScheduleFields({
         <p className="text-xs text-muted-foreground">Scheduled for {longDay(value.start_date)}</p>
       </div>
 
-      <div className="space-y-2">
-        <Label>🕒 Time of Day</Label>
-        <div className="flex flex-wrap gap-2">
-          {TIME_CATEGORIES.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              className={chip(value.time_of_day === item.id)}
-              onClick={() => patch({ time_of_day: item.id })}
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
-      </div>
 
       <div className="space-y-2">
         <Label>🔄 Repeat</Label>
