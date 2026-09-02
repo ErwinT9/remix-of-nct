@@ -1,131 +1,55 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import {
-  ChevronRight,
-  Flame,
-  Footprints,
-  Headphones,
-  Inbox,
-  Leaf,
-  Palette,
-  Sparkles,
-} from "lucide-react";
+import { ChevronRight, Leaf } from "lucide-react";
 
 import { AppShell } from "@/components/AppShell";
 import { GoalsRoutines } from "@/components/goals/GoalsRoutines";
 import { MotivationIllustration } from "@/components/illustrations";
-import { HEALING_AUDIO_TAGLINE } from "@/lib/healingAudio";
 import { haptic } from "@/lib/native/haptics";
 
 export const Route = createFileRoute("/_authenticated/motivation/")({
   head: () => ({
     meta: [
-      { title: "Motivation | No Contact Tracker" },
+      { title: "Journey | No Contact Tracker" },
       {
         name: "description",
-        content: "Short motivational guides to help you keep choosing yourself during no contact.",
+        content: "Small guided steps, goals and routines to help you heal during no contact.",
       },
-      { property: "og:title", content: "Motivation | No Contact Tracker" },
+      { property: "og:title", content: "Journey | No Contact Tracker" },
       {
         property: "og:description",
-        content: "Open the motivational guide for gentle reminders that keep your streak alive.",
+        content: "Your healing journey: guided levels plus goals and routines that keep you moving forward.",
       },
     ],
   }),
-  component: MotivationScreen,
+  component: JourneyHomeScreen,
 });
 
-const CARDS = [
-  {
-    to: "/motivation/journey",
-    icon: Leaf,
-    title: "Journey",
-    tagline: "Small steps to help you heal, grow, and reconnect with yourself.",
-    tint: "bg-mint",
-  },
-  {
-    to: "/streak-unlock",
-    icon: Palette,
-    title: "7-Day Streak Unlock",
-    tagline: "Watch your garden gain colour and unlock a printable coloring page",
-    tint: "bg-lavender",
-  },
-  {
-    to: "/motivation/guide",
-    icon: Flame,
-    title: "Motivational Guide",
-    tagline: "Short guides written for the moments the urge feels loudest.",
-    tint: "bg-mint",
-  },
-  {
-    to: "/motivation/healing-audio",
-    icon: Headphones,
-    title: "Healing Audio",
-    tagline: HEALING_AUDIO_TAGLINE,
-    tint: "bg-lavender",
-  },
-  {
-    to: "/motivation/walk",
-    icon: Footprints,
-    title: "Outdoor Walk",
-    tagline: "Go for a walk and record it for physical and mental well-being",
-    tint: "bg-sand",
-  },
-  {
-    to: "/motivation/worry-box",
-    icon: Inbox,
-    title: "Worry Box",
-    tagline: "Put your worries down somewhere safe when anxiety feels loud",
-    tint: "bg-sky",
-  },
-  {
-    to: "/motivation/gratitude-jar",
-    icon: Sparkles,
-    title: "Gratitude Jar",
-    tagline: "Collect the small good things, one candy, heart or leaf at a time",
-    tint: "bg-blush",
-  },
-
-] as const;
-
-function MotivationCard({ card }: { card: (typeof CARDS)[number] }) {
-  const { to, icon: Icon, title, tagline, tint } = card;
+function JourneyHomeScreen() {
   return (
-    <li>
-      <Link
-        to={to}
-        onClick={() => haptic.select()}
-        className="press soft-card flex items-center gap-4 rounded-3xl p-5"
-      >
-        <span className={`flex size-11 shrink-0 items-center justify-center rounded-2xl ${tint}`}>
-          <Icon className="size-5 text-on-tint" aria-hidden />
-        </span>
-        <span className="min-w-0 flex-1">
-          <span className="block font-semibold">{title}</span>
-          <span className="mt-1 block text-sm text-muted-foreground">{tagline}</span>
-        </span>
-        <ChevronRight className="size-5 shrink-0 text-muted-foreground" aria-hidden />
-      </Link>
-    </li>
-  );
-}
-
-function MotivationScreen() {
-  const [journey, ...rest] = CARDS;
-  return (
-    <AppShell title="Motivation" subtitle="A little reminder to keep choosing yourself.">
+    <AppShell title="Journey" subtitle="Small steps to help you heal, grow, and reconnect with yourself.">
       <MotivationIllustration className="mx-auto mb-5 mt-1 w-40" />
       <ul className="space-y-3">
-        <MotivationCard card={journey} />
+        <li>
+          <Link
+            to="/motivation/journey"
+            onClick={() => haptic.select()}
+            className="press soft-card flex items-center gap-4 rounded-3xl p-5"
+          >
+            <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-mint">
+              <Leaf className="size-5 text-on-tint" aria-hidden />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block font-semibold">Journey</span>
+              <span className="mt-1 block text-sm text-muted-foreground">
+                Small steps to help you heal, grow, and reconnect with yourself.
+              </span>
+            </span>
+            <ChevronRight className="size-5 shrink-0 text-muted-foreground" aria-hidden />
+          </Link>
+        </li>
       </ul>
 
       <GoalsRoutines />
-
-      <ul className="mt-8 space-y-3">
-        {rest.map((card) => (
-          <MotivationCard key={card.to} card={card} />
-        ))}
-      </ul>
     </AppShell>
   );
 }
-
