@@ -203,21 +203,8 @@ export function ScheduleFields({
 
         {value.reminder_enabled ? (
           <div className="space-y-2 pt-1">
-            <div className="flex flex-wrap gap-2">
-              {REMINDER_PRESETS.map((preset) => (
-                <button
-                  key={preset.id}
-                  type="button"
-                  className={chip(value.reminder_time === preset.time)}
-                  onClick={() =>
-                    patch({ reminder_time: preset.time, reminder_timezone: deviceTimezoneName() })
-                  }
-                >
-                  {preset.label} · {formatTime12(preset.time)}
-                </button>
-              ))}
-            </div>
             <label className="flex items-center gap-2 rounded-2xl border border-border px-3 py-2">
+
               <span className="text-xs text-muted-foreground">Exact time</span>
               <Input
                 type="time"
