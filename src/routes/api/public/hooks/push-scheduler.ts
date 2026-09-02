@@ -2,6 +2,12 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import { normalizeNotificationPrefs } from "@/lib/notifications/categories";
 import {
+  dueGoalReminders,
+  goalReminderNotificationId,
+  reminderBody,
+  type ReminderRow,
+} from "@/lib/notifications/goalReminderSchedule";
+import {
   cycleDay,
   deepLinkFor,
   dueNotifications,
@@ -11,6 +17,7 @@ import {
   preferenceKey,
   SCHEDULE,
 } from "@/lib/notifications/schedule";
+
 
 /**
  * The single scheduler for the 30-day push cycle (120 notifications).
