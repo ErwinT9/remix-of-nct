@@ -3,14 +3,24 @@ package com.nocontacttracker.app;
 import android.os.Bundle;
 import android.webkit.WebView;
 
+import androidx.core.view.WindowCompat;
+
 import com.getcapacitor.BridgeActivity;
 
 public class MainActivity extends BridgeActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        // Must be registered before super.onCreate() so the bridge picks it up.
+        // Must be registered before super.onCreate() so the bridge picks them up.
         registerPlugin(FirebaseInAppMessagingPlugin.class);
+        registerPlugin(SystemBarsPlugin.class);
         super.onCreate(savedInstanceState);
+
+        // Edge-to-edge on every supported Android version (not just 15+, where
+        // the platform enforces it). Modern AndroidX API only: no deprecated
+        // statusBarColor / navigationBarColor / SYSTEM_UI_FLAG_* and no
+        // edge-to-edge opt-out. The web layer already consumes the resulting
+        // insets through CSS env(safe-area-inset-*) with viewport-fit=cover.
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
         // Hide the WebView's native scrollbar indicators. Scrolling itself is
         // untouched — this only disables the visual scrollbar thumb/track.
