@@ -5,6 +5,7 @@ import { toast } from "sonner";
 
 import { SubScreen } from "@/components/SubScreen";
 import { Button } from "@/components/ui/button";
+import { TimePickerField } from "@/components/pickers";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import type { ActivityProps } from "@/components/journey/activities";
