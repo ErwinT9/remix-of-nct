@@ -278,7 +278,7 @@ function HomeScreen() {
               <Wrench className="size-5 text-on-tint" aria-hidden />
             </span>
             <div className="min-w-0 flex-1">
-              <p className="font-medium">Tools for Tough Moments</p>
+              <p className="font-medium">Healing Tools</p>
               <p className="text-sm text-muted-foreground">
                 Guides & other tools to help you reset.
               </p>

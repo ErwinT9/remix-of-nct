@@ -71,8 +71,8 @@ export function SosToolkit({
     { key: "urge", label: t("sos.urge"), hint: t("sos.urgeHint"), icon: CircleDot, tint: "bg-mint" },
     {
       key: "motivation",
-      label: "Motivation",
-      hint: "A little reminder to keep choosing yourself.",
+      label: "Healing Tools",
+      hint: "Tools to help you recover fast.",
       icon: Flame,
       tint: "bg-mint",
     },
