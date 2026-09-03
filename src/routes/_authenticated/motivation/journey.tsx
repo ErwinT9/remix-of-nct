@@ -55,7 +55,9 @@ export const Route = createFileRoute("/_authenticated/motivation/journey")({
       { property: "og:title", content: "Journey | No Contact Tracker" },
       {
         property: "og:description",
-        content: "Level 1: Find Your Calm and Level 2: Rest & Recharge — gentle guided activities.",
+        content:
+          "Find Your Calm, Rest & Recharge, and Rediscover Yourself — gentle guided activities.",
+
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
@@ -302,8 +304,9 @@ function JourneyScreen() {
       </ul>
 
       <p className="mt-6 px-1 text-center text-xs text-muted-foreground">
-        Level 3 arrives after you complete Level 2.
+        More levels arrive as you complete the ones above.
       </p>
+
     </SubScreen>
   );
 }
