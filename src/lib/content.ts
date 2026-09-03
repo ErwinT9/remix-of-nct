@@ -114,7 +114,7 @@ export const MOOD_ACTIONS = [
   { key: "breathe", emoji: "🌬", label: "Take 3 deep breaths" },
   { key: "journal", emoji: "📖", label: "Journal" },
   { key: "music", emoji: "🎵", label: "Listen to music" },
-  { key: "water", emoji: "☕", label: "Drink water" },
+  { key: "water", emoji: "💧", label: "Drink water" },
   { key: "offline", emoji: "📵", label: "Stay off social media" },
   { key: "friend", emoji: "📞", label: "Call a friend" },
   { key: "meditate", emoji: "🧘", label: "Meditate" },

@@ -122,7 +122,7 @@ function HoldCircle({ done, onDone }: { done: boolean; onDone: () => void }) {
             fill="none"
             strokeWidth="7"
             strokeLinecap="round"
-            className="stroke-primary transition-[stroke-dashoffset] duration-100 ease-linear"
+            className="stroke-primary"
             strokeDasharray={CIRCUMFERENCE}
             strokeDashoffset={CIRCUMFERENCE * (1 - progress)}
           />
