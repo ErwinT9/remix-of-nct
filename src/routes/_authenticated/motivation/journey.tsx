@@ -75,7 +75,13 @@ const COMPONENTS: Record<JourneyActivityId, (props: ActivityProps) => React.Reac
   "l2-let-go": LetGoActivity,
   "l2-affirmation": JourneyAffirmationActivity,
   "l2-sleep-routine": SleepRoutineActivity,
+  "l3-who-am-i": WhoAmIActivity,
+  "l3-strengths": SeeStrengthsActivity,
+  "l3-just-for-you": JustForYouActivity,
+  "l3-confidence": BuildConfidenceActivity,
+  "l3-self-portrait": SelfPortraitActivity,
 };
+
 
 const LEVEL_STATE_LABEL = {
   completed: "Completed",
