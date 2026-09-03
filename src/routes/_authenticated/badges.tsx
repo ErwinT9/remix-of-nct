@@ -32,6 +32,7 @@ function BadgesScreen() {
   }, []);
 
   const { progress, owned, unlockedCount, total } = useBadges({ autoUnlock: true });
+  const overallPercent = total > 0 ? Math.round((unlockedCount / total) * 100) : 0;
 
   const groups = BADGE_CATEGORIES.map((category) => ({
     category,
@@ -41,6 +42,25 @@ function BadgesScreen() {
   return (
     <AppShell title={t("badgesScreen.title")} subtitle={t("badgesScreen.unlockedOf", { unlockedCount, total })}>
       <div className="space-y-6">
+        <div className="rounded-2xl bg-card p-4">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-medium text-foreground">
+              {t("badgesScreen.unlockedOf", { unlockedCount, total })}
+            </span>
+            <span className="text-sm tabular-nums text-muted-foreground">{overallPercent}%</span>
+          </div>
+          <div className="mt-2.5 h-2.5 w-full overflow-hidden rounded-full bg-muted">
+            <div
+              className="h-full rounded-full bg-success transition-[width] duration-500 ease-out"
+              style={{ width: `${overallPercent}%` }}
+              aria-valuenow={overallPercent}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              role="progressbar"
+            />
+          </div>
+        </div>
+
         {groups.map((group) => (
           <section key={group.category} className="space-y-3">
             <div className="flex items-baseline justify-between px-1">
