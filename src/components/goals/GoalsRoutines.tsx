@@ -371,15 +371,13 @@ export function GoalsRoutines() {
           </button>
           <div className="min-w-0 text-center">
             <p className="truncate text-sm font-semibold">{friendlyDay(date)}</p>
-            <label className="mt-0.5 block text-xs text-muted-foreground">
-              <span className="sr-only">Choose a date</span>
-              <input
-                type="date"
+            <div className="mt-0.5">
+              <DatePickerField
+                variant="ghost"
                 value={date}
-                onChange={(event) => event.target.value && setDate(event.target.value)}
-                className="bg-transparent text-center text-xs text-muted-foreground"
+                onChange={(next) => next && setDate(next)}
               />
-            </label>
+            </div>
           </div>
           <button
             type="button"

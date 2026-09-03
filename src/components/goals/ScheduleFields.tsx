@@ -1,6 +1,6 @@
-import { Bell, CalendarDays } from "lucide-react";
+import { Bell } from "lucide-react";
 
-import { Input } from "@/components/ui/input";
+import { DatePickerField, TimePickerField } from "@/components/pickers";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import {
@@ -84,18 +84,11 @@ export function ScheduleFields({
             Tomorrow
           </button>
         </div>
-        <label className="flex items-center gap-2 rounded-2xl border border-border px-3 py-2">
-          <CalendarDays className="size-4 shrink-0 text-muted-foreground" aria-hidden />
-          <span className="sr-only">Choose a date</span>
-          <Input
-            type="date"
-            value={value.start_date}
-            onChange={(event) => {
-              if (event.target.value) onChange({ ...value, start_date: event.target.value });
-            }}
-            className="h-9 border-0 bg-transparent p-0 text-sm shadow-none focus-visible:ring-0"
-          />
-        </label>
+        <DatePickerField
+          variant="compact"
+          value={value.start_date}
+          onChange={(next) => onChange({ ...value, start_date: next })}
+        />
         <p className="text-xs text-muted-foreground">Scheduled for {longDay(value.start_date)}</p>
       </div>
 
@@ -150,12 +143,13 @@ export function ScheduleFields({
               >
                 Never
               </button>
-              <Input
-                type="date"
-                value={value.end_date ?? ""}
+              <DatePickerField
+                variant="compact"
+                className="flex-1"
+                placeholder="Pick an end date"
+                value={value.end_date}
                 min={value.start_date}
-                onChange={(event) => onChange({ ...value, end_date: event.target.value || null })}
-                className="h-10 w-auto flex-1 rounded-2xl text-sm"
+                onChange={(next) => onChange({ ...value, end_date: next || null })}
               />
             </div>
           </div>
@@ -182,22 +176,20 @@ export function ScheduleFields({
 
         {value.reminder_enabled ? (
           <div className="space-y-2 pt-1">
-            <label className="flex items-center gap-2 rounded-2xl border border-border px-3 py-2">
+            <div className="space-y-2 rounded-2xl border border-border px-3 py-2">
               <span className="text-xs text-muted-foreground">Exact time</span>
-              <Input
-                type="time"
-                step={60}
-                value={value.reminder_time ?? ""}
-                onChange={(event) =>
+              <TimePickerField
+                size="sm"
+                value={value.reminder_time ?? "09:00"}
+                onChange={(next) =>
                   onChange({
                     ...value,
-                    reminder_time: event.target.value || null,
+                    reminder_time: next || null,
                     reminder_timezone: deviceTimezoneName(),
                   })
                 }
-                className="h-9 flex-1 border-0 bg-transparent p-0 text-right text-sm shadow-none focus-visible:ring-0"
               />
-            </label>
+            </div>
             <p className="text-xs text-muted-foreground">
               {value.reminder_time
                 ? `We'll send one gentle nudge at ${formatTime12(value.reminder_time)}, following your schedule above.`
