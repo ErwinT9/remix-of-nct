@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
-import { CalendarDays, Clock } from "lucide-react";
+import { CalendarDays } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
@@ -241,9 +240,6 @@ export function TimePickerField({
           </SelectItem>
         </SelectContent>
       </Select>
-      <Button type="button" variant="ghost" size="icon" tabIndex={-1} aria-hidden className="hidden">
-        <Clock className="size-4" />
-      </Button>
     </div>
   );
 }
