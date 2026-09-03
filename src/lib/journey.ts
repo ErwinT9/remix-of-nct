@@ -274,7 +274,7 @@ export type JourneyLevelDef = {
   activities: readonly JourneyActivityDef[];
 };
 
-export const LEVELS: readonly JourneyLevelDef[] = [LEVEL_1, LEVEL_2, LEVEL_3, LEVEL_4];
+export const LEVELS: readonly JourneyLevelDef[] = [LEVEL_1, LEVEL_2, LEVEL_3, LEVEL_4, LEVEL_5];
 
 export type ActivityState = "completed" | "available" | "locked";
 export type LevelState = "completed" | "in_progress" | "available" | "locked";
