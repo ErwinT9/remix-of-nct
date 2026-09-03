@@ -58,57 +58,28 @@ export function DateTimeField({ value, onChange, disableFuture, id, invalid, cla
 
   return (
     <div className={cn("space-y-2", className)}>
-      <Input
+      <DatePickerField
         id={id}
-        type="date"
         value={parts.dateValue}
+        invalid={invalid ?? false}
         {...(disableFuture ? { max: toLocalDateValue() } : {})}
-        aria-invalid={invalid ?? false}
-        onChange={(event) => {
-          if (event.target.value) emit({ dateValue: event.target.value });
-        }}
-        className="h-13 rounded-2xl"
+        onChange={(dateValue) => emit({ dateValue })}
       />
-      <div className="flex items-center gap-2">
-        <select
-          aria-label="Hour"
-          className={selectClass}
-          value={parts.hour12}
-          onChange={(event) => emit({ hour12: Number(event.target.value) })}
-        >
-          {Array.from({ length: 12 }, (_, index) => index + 1).map((hour) => (
-            <option key={hour} value={hour} disabled={hourDisabled(hour)}>
-              {String(hour).padStart(2, "0")}
-            </option>
-          ))}
-        </select>
-        <span aria-hidden className="text-lg font-medium text-muted-foreground">
-          :
-        </span>
-        <select
-          aria-label="Minute"
-          className={selectClass}
-          value={parts.minute}
-          onChange={(event) => emit({ minute: Number(event.target.value) })}
-        >
-          {Array.from({ length: 60 }, (_, index) => index).map((minute) => (
-            <option key={minute} value={minute} disabled={minuteDisabled(minute)}>
-              {String(minute).padStart(2, "0")}
-            </option>
-          ))}
-        </select>
-        <select
-          aria-label="AM or PM"
-          className={selectClass}
-          value={parts.meridiem}
-          onChange={(event) => emit({ meridiem: event.target.value as "AM" | "PM" })}
-        >
-          <option value="AM">AM</option>
-          <option value="PM" disabled={isToday && nowHour < 12}>
-            PM
-          </option>
-        </select>
-      </div>
+      <TimePickerField
+        value={partsToTimeValue(parts.hour12, parts.minute, parts.meridiem)}
+        onChange={(next) => {
+          const [hour24, minute] = next.split(":").map(Number);
+          const hours = hour24 ?? 0;
+          emit({
+            hour12: hours % 12 === 0 ? 12 : hours % 12,
+            minute: minute ?? 0,
+            meridiem: hours >= 12 ? "PM" : "AM",
+          });
+        }}
+        hourDisabled={(hour24) => hourDisabled(hour24 % 12 === 0 ? 12 : hour24 % 12)}
+        minuteDisabled={minuteDisabled}
+        meridiemDisabled={(meridiem) => meridiem === "PM" && Boolean(isToday) && nowHour < 12}
+      />
       {value ? <p className="text-xs text-muted-foreground">{formatLocalDateTime(value)}</p> : null}
     </div>
   );
