@@ -176,6 +176,10 @@ export type JourneyLevelDef = {
 
 export const LEVELS: readonly JourneyLevelDef[] = [LEVEL_1, LEVEL_2, LEVEL_3];
 
+export type ActivityState = "completed" | "available" | "locked";
+export type LevelState = "completed" | "in_progress" | "available" | "locked";
+
+
 
 export function progressByActivity(rows: JourneyProgress[]) {
   const map = new Map<string, JourneyProgress>();
