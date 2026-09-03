@@ -20,6 +20,14 @@ import {
   PrepareRestActivity,
   SleepRoutineActivity,
 } from "@/components/journey/level2";
+import {
+  BuildConfidenceActivity,
+  JustForYouActivity,
+  SeeStrengthsActivity,
+  SelfPortraitActivity,
+  WhoAmIActivity,
+} from "@/components/journey/level3";
+
 import { journeyRepo } from "@/data/repository";
 import { useAuth } from "@/hooks/useAuth";
 import { celebrate } from "@/lib/celebrate";
