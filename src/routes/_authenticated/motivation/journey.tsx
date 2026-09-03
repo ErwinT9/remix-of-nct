@@ -63,7 +63,7 @@ export const Route = createFileRoute("/_authenticated/motivation/journey")({
       {
         property: "og:description",
         content:
-          "Find Your Calm, Rest & Recharge, and Rediscover Yourself — gentle guided activities.",
+          "Find Your Calm, Rest & Recharge, Rediscover Yourself, and Notice the Good — gentle guided activities.",
 
       },
       { property: "og:type", content: "website" },
