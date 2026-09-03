@@ -22,8 +22,6 @@ type Props = {
   className?: string;
 };
 
-const selectClass =
-  "h-13 min-w-0 flex-1 rounded-2xl border border-input bg-background px-3 text-base text-foreground";
 
 /**
  * Date + 12-hour time picker that always works in the device's local
