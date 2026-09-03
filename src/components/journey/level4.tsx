@@ -183,7 +183,7 @@ export function WorthyMomentActivity({
           className="press h-12 w-full rounded-2xl"
           disabled={!text.trim() || busy || savedToday}
           onClick={async () => {
-            await onMarkDay({ text });
+            await onMarkDay();
             haptic.success();
             setSavedToday(true);
             setText("");
@@ -379,7 +379,7 @@ export function GratitudePracticeActivity({
           className="press h-12 w-full rounded-2xl"
           disabled={!chosen || busy || savedToday}
           onClick={async () => {
-            await onMarkDay({ item: chosen });
+            await onMarkDay();
             haptic.success();
             setSavedToday(true);
             setIdea(null);

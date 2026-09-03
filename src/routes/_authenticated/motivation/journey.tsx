@@ -27,6 +27,13 @@ import {
   SelfPortraitActivity,
   WhoAmIActivity,
 } from "@/components/journey/level3";
+import {
+  AppreciateActivity,
+  GoodThingsListActivity,
+  GratitudePracticeActivity,
+  OneGoodThingActivity,
+  WorthyMomentActivity,
+} from "@/components/journey/level4";
 
 import { journeyRepo } from "@/data/repository";
 import { useAuth } from "@/hooks/useAuth";
@@ -82,6 +89,11 @@ const COMPONENTS: Record<JourneyActivityId, (props: ActivityProps) => React.Reac
   "l3-just-for-you": JustForYouActivity,
   "l3-confidence": BuildConfidenceActivity,
   "l3-self-portrait": SelfPortraitActivity,
+  "l4-one-good-thing": OneGoodThingActivity,
+  "l4-worthy-moment": WorthyMomentActivity,
+  "l4-appreciate": AppreciateActivity,
+  "l4-gratitude-practice": GratitudePracticeActivity,
+  "l4-good-things-list": GoodThingsListActivity,
 };
 
 
