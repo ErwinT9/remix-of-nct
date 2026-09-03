@@ -5,6 +5,8 @@
  * The preference is mirrored to localStorage synchronously so a reload
  * paints the right theme immediately (see the boot script in __root).
  */
+import { setSystemBarsAppearance } from "@/lib/systemBars";
+
 export type ThemeMode = "light" | "dark" | "system";
 export type ResolvedTheme = "light" | "dark";
 
@@ -39,6 +41,8 @@ export function applyTheme(mode: ThemeMode): ResolvedTheme {
   root.style.colorScheme = resolved;
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.setAttribute("content", resolved === "dark" ? "#12141a" : "#FFFFFF");
+  // Native status/navigation bar icon contrast follows the in-app theme.
+  setSystemBarsAppearance(resolved === "dark");
   return resolved;
 }
 

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Window background behind the WebView (dark). Matches the web dark
+         theme background (#12141a) used by the theme-color meta tag. -->
+    <color name="appWindowBackground">#12141A</color>
+</resources>

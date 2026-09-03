@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Window background behind the WebView (light). Matches the web light
+         theme background so no colour seam appears while the page paints. -->
+    <color name="appWindowBackground">#FFFFFF</color>
+</resources>
