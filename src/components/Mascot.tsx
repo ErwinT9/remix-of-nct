@@ -1,4 +1,4 @@
-import mascotAsset from "@/assets/solace-mascot.png.asset.json";
+import mascotSrc from "@/assets/solace-mascot.webp";
 import { cn } from "@/lib/utils";
 
 /**
@@ -44,7 +44,7 @@ export function Mascot({
       )}
     >
       <img
-        src={mascotAsset.url}
+        src={mascotSrc}
         alt={alt}
         draggable={false}
         loading="eager"
