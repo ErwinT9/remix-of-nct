@@ -501,3 +501,39 @@
     animation: none;
   }
 }
+
+/* --- Solace mascot idle animation -------------------------------------- */
+@keyframes mascot-idle {
+  0%,
+  100% {
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-1.5%) scale(1.02) rotate(0.6deg);
+  }
+}
+
+@keyframes mascot-blink {
+  0%,
+  92%,
+  100% {
+    opacity: 0;
+    transform: scaleY(0.2);
+  }
+  94%,
+  96% {
+    opacity: 0.95;
+    transform: scaleY(1);
+  }
+}
+
+@utility animate-mascot-idle {
+  animation: mascot-idle 6s ease-in-out infinite;
+  transform-origin: 50% 85%;
+  will-change: transform;
+}
+
+@utility animate-mascot-blink {
+  animation: mascot-blink 7.5s ease-in-out infinite;
+  transform-origin: 50% 100%;
+}
