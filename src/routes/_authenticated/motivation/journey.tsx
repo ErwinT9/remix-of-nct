@@ -20,6 +20,14 @@ import {
   PrepareRestActivity,
   SleepRoutineActivity,
 } from "@/components/journey/level2";
+import {
+  BuildConfidenceActivity,
+  JustForYouActivity,
+  SeeStrengthsActivity,
+  SelfPortraitActivity,
+  WhoAmIActivity,
+} from "@/components/journey/level3";
+
 import { journeyRepo } from "@/data/repository";
 import { useAuth } from "@/hooks/useAuth";
 import { celebrate } from "@/lib/celebrate";
@@ -47,7 +55,9 @@ export const Route = createFileRoute("/_authenticated/motivation/journey")({
       { property: "og:title", content: "Journey | No Contact Tracker" },
       {
         property: "og:description",
-        content: "Level 1: Find Your Calm and Level 2: Rest & Recharge — gentle guided activities.",
+        content:
+          "Find Your Calm, Rest & Recharge, and Rediscover Yourself — gentle guided activities.",
+
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
@@ -67,7 +77,13 @@ const COMPONENTS: Record<JourneyActivityId, (props: ActivityProps) => React.Reac
   "l2-let-go": LetGoActivity,
   "l2-affirmation": JourneyAffirmationActivity,
   "l2-sleep-routine": SleepRoutineActivity,
+  "l3-who-am-i": WhoAmIActivity,
+  "l3-strengths": SeeStrengthsActivity,
+  "l3-just-for-you": JustForYouActivity,
+  "l3-confidence": BuildConfidenceActivity,
+  "l3-self-portrait": SelfPortraitActivity,
 };
+
 
 const LEVEL_STATE_LABEL = {
   completed: "Completed",
@@ -288,8 +304,9 @@ function JourneyScreen() {
       </ul>
 
       <p className="mt-6 px-1 text-center text-xs text-muted-foreground">
-        Level 3 arrives after you complete Level 2.
+        More levels arrive as you complete the ones above.
       </p>
+
     </SubScreen>
   );
 }

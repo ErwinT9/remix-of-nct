@@ -2,6 +2,7 @@ import type { JourneyProgress } from "@/data/types";
 
 export const JOURNEY_LEVEL_1 = "level-1";
 export const JOURNEY_LEVEL_2 = "level-2";
+export const JOURNEY_LEVEL_3 = "level-3";
 
 export type JourneyActivityId =
   | "l1-feelings"
@@ -13,7 +14,13 @@ export type JourneyActivityId =
   | "l2-prepare-rest"
   | "l2-let-go"
   | "l2-affirmation"
-  | "l2-sleep-routine";
+  | "l2-sleep-routine"
+  | "l3-who-am-i"
+  | "l3-strengths"
+  | "l3-just-for-you"
+  | "l3-confidence"
+  | "l3-self-portrait";
+
 
 export type JourneyActivityDef = {
   id: JourneyActivityId;
@@ -113,6 +120,52 @@ export const LEVEL_2 = {
   ] satisfies JourneyActivityDef[],
 } as const;
 
+export const LEVEL_3 = {
+  id: JOURNEY_LEVEL_3,
+  title: "Level 3: Rediscover Yourself",
+  description:
+    "Reconnect with who you are outside the relationship — your qualities, your strengths, and the person you are becoming.",
+  objective:
+    "Develop self-acceptance, confidence, and a clear sense of your own identity.",
+  activities: [
+    {
+      id: "l3-who-am-i",
+      title: "Who Am I Beyond the Relationship?",
+      description:
+        "Reflect on your personality, values, interests, strengths, and the qualities that make you uniquely you.",
+      requiredDays: 1,
+    },
+    {
+      id: "l3-strengths",
+      title: "See Your Strengths",
+      description:
+        "Name the qualities you appreciate about yourself, over two different days.",
+      requiredDays: 2,
+    },
+    {
+      id: "l3-just-for-you",
+      title: "Do Something Just for You",
+      description:
+        "Choose and complete a small thing you genuinely enjoy, without seeking anyone else's approval.",
+      requiredDays: 1,
+    },
+    {
+      id: "l3-confidence",
+      title: "Build Your Confidence",
+      description:
+        "Each day, complete one small action that makes you feel capable, independent, or proud.",
+      requiredDays: 4,
+    },
+    {
+      id: "l3-self-portrait",
+      title: "My New Self-Portrait",
+      description:
+        "Write about the person you are becoming — your qualities, values, boundaries, and dreams.",
+      requiredDays: 1,
+    },
+  ] satisfies JourneyActivityDef[],
+} as const;
+
 export type JourneyLevelDef = {
   id: string;
   title: string;
@@ -121,10 +174,12 @@ export type JourneyLevelDef = {
   activities: readonly JourneyActivityDef[];
 };
 
-export const LEVELS: readonly JourneyLevelDef[] = [LEVEL_1, LEVEL_2];
+export const LEVELS: readonly JourneyLevelDef[] = [LEVEL_1, LEVEL_2, LEVEL_3];
 
 export type ActivityState = "completed" | "available" | "locked";
 export type LevelState = "completed" | "in_progress" | "available" | "locked";
+
+
 
 export function progressByActivity(rows: JourneyProgress[]) {
   const map = new Map<string, JourneyProgress>();
