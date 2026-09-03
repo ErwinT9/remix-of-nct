@@ -34,6 +34,13 @@ import {
   OneGoodThingActivity,
   WorthyMomentActivity,
 } from "@/components/journey/level4";
+import {
+  AcceptActivity,
+  ChooseFutureActivity,
+  JourneyForwardActivity,
+  PastTaughtActivity,
+  ReleaseActivity,
+} from "@/components/journey/level5";
 
 import { journeyRepo } from "@/data/repository";
 import { useAuth } from "@/hooks/useAuth";
@@ -63,7 +70,7 @@ export const Route = createFileRoute("/_authenticated/motivation/journey")({
       {
         property: "og:description",
         content:
-          "Find Your Calm, Rest & Recharge, Rediscover Yourself, and Notice the Good — gentle guided activities.",
+          "Find Your Calm, Rest & Recharge, Rediscover Yourself, Notice the Good, and Move Forward — gentle guided activities.",
 
       },
       { property: "og:type", content: "website" },
@@ -94,6 +101,11 @@ const COMPONENTS: Record<JourneyActivityId, (props: ActivityProps) => React.Reac
   "l4-appreciate": AppreciateActivity,
   "l4-gratitude-practice": GratitudePracticeActivity,
   "l4-good-things-list": GoodThingsListActivity,
+  "l5-accept": AcceptActivity,
+  "l5-release": ReleaseActivity,
+  "l5-past-taught": PastTaughtActivity,
+  "l5-choose-future": ChooseFutureActivity,
+  "l5-journey-forward": JourneyForwardActivity,
 };
 
 
@@ -316,7 +328,7 @@ function JourneyScreen() {
       </ul>
 
       <p className="mt-6 px-1 text-center text-xs text-muted-foreground">
-        More levels arrive as you complete the ones above.
+        Complete all five levels to finish your Journey.
       </p>
 
     </SubScreen>

@@ -4,6 +4,7 @@ export const JOURNEY_LEVEL_1 = "level-1";
 export const JOURNEY_LEVEL_2 = "level-2";
 export const JOURNEY_LEVEL_3 = "level-3";
 export const JOURNEY_LEVEL_4 = "level-4";
+export const JOURNEY_LEVEL_5 = "level-5";
 
 export type JourneyActivityId =
   | "l1-feelings"
@@ -25,7 +26,12 @@ export type JourneyActivityId =
   | "l4-worthy-moment"
   | "l4-appreciate"
   | "l4-gratitude-practice"
-  | "l4-good-things-list";
+  | "l4-good-things-list"
+  | "l5-accept"
+  | "l5-release"
+  | "l5-past-taught"
+  | "l5-choose-future"
+  | "l5-journey-forward";
 
 
 export type JourneyActivityDef = {
@@ -215,6 +221,51 @@ export const LEVEL_4 = {
   ] satisfies JourneyActivityDef[],
 } as const;
 
+export const LEVEL_5 = {
+  id: JOURNEY_LEVEL_5,
+  title: "Level 5: Move Forward",
+  description:
+    "Accept the past, recognize how far you've come, release what's left, and look toward your future with confidence.",
+  objective:
+    "Accept the past, recognize your growth, release emotional weight, and confidently look toward your future.",
+  activities: [
+    {
+      id: "l5-accept",
+      title: "Accept What You Cannot Change",
+      description: "Reflect on what is outside your control and what you can choose to focus on today.",
+      requiredDays: 1,
+    },
+    {
+      id: "l5-release",
+      title: "Release What You're Carrying",
+      description:
+        "Identify and gently let go of a thought, regret, or emotional weight, over two different days.",
+      requiredDays: 2,
+    },
+    {
+      id: "l5-past-taught",
+      title: "What the Past Taught Me",
+      description:
+        "Reflect on what you learned about yourself, relationships, boundaries, and what you want next.",
+      requiredDays: 1,
+    },
+    {
+      id: "l5-choose-future",
+      title: "Choose Your Future",
+      description:
+        "Each day, complete one small action that represents choosing yourself and moving forward.",
+      requiredDays: 4,
+    },
+    {
+      id: "l5-journey-forward",
+      title: "My Journey Forward",
+      description:
+        "A final reflection on how far you've come, who you've become, and your next chapter.",
+      requiredDays: 1,
+    },
+  ] satisfies JourneyActivityDef[],
+} as const;
+
 export type JourneyLevelDef = {
   id: string;
   title: string;
@@ -223,7 +274,7 @@ export type JourneyLevelDef = {
   activities: readonly JourneyActivityDef[];
 };
 
-export const LEVELS: readonly JourneyLevelDef[] = [LEVEL_1, LEVEL_2, LEVEL_3, LEVEL_4];
+export const LEVELS: readonly JourneyLevelDef[] = [LEVEL_1, LEVEL_2, LEVEL_3, LEVEL_4, LEVEL_5];
 
 export type ActivityState = "completed" | "available" | "locked";
 export type LevelState = "completed" | "in_progress" | "available" | "locked";
