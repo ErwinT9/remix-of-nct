@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
-import { AppLogo } from "@/components/AppLogo";
+import { Mascot } from "@/components/Mascot";
 import { useAuth } from "@/hooks/useAuth";
 import { analytics } from "@/lib/analytics";
 import { TAGLINE } from "@/lib/content";
@@ -57,13 +57,13 @@ function Splash() {
           aria-hidden
           className="animate-soft-pulse absolute inset-0 -z-10 rounded-full bg-mint blur-3xl"
         />
-        <AppLogo animate className="size-36" />
+        <Mascot size="hero" reveal />
       </div>
       <h1 className="animate-rise mt-10 text-2xl font-semibold tracking-tight">
-        {t("landing.title", "SOLACE: BREAKUP RECOVERY")}
+        {t("landing.title", "SOLACE")}
       </h1>
       <p className="text-sm font-medium tracking-[0.3em] text-muted-foreground uppercase">
-        {t("landing.subtitle", "Breakup Reset")}
+        {t("landing.subtitle", "Breakup Recovery")}
       </p>
       <p className="animate-rise mt-6 max-w-xs text-sm text-muted-foreground">{TAGLINE}</p>
     </div>

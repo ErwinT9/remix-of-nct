@@ -28,8 +28,8 @@ export const uiEn = {
     confirmEmail: "Check your email to confirm your account.",
   },
   landing: {
-    title: "SOLACE: BREAKUP RECOVERY",
-    subtitle: "Breakup Reset",
+    title: "SOLACE",
+    subtitle: "Breakup Recovery",
   },
   paywall: {
     "title": "30 Days Free. Your Best Chance to Reset.",
