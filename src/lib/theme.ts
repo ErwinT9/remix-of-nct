@@ -39,6 +39,8 @@ export function applyTheme(mode: ThemeMode): ResolvedTheme {
   root.style.colorScheme = resolved;
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.setAttribute("content", resolved === "dark" ? "#12141a" : "#FFFFFF");
+  // Native status/navigation bar icon contrast follows the in-app theme.
+  setSystemBarsAppearance(resolved === "dark");
   return resolved;
 }
 
