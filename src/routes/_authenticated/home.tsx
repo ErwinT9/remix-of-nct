@@ -48,12 +48,12 @@ import { daysSince, elapsedSince } from "@/lib/streak";
 export const Route = createFileRoute("/_authenticated/home")({
   head: () => ({
     meta: [
-      { title: "Your streak | No Contact Tracker" },
+      { title: "Your streak | SOLACE: BREAKUP RECOVERY" },
       {
         name: "description",
         content: "Watch your no-contact streak grow second by second and see your next milestone.",
       },
-      { property: "og:title", content: "Your streak | No Contact Tracker" },
+      { property: "og:title", content: "Your streak | SOLACE: BREAKUP RECOVERY" },
       { property: "og:description", content: "Every second here is a second you didn't reach out." },
     ],
   }),

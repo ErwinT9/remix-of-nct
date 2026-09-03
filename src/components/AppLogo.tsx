@@ -10,7 +10,7 @@ export function AppLogo({ animate = false, className }: { animate?: boolean; cla
   return (
     <img
       src={logo}
-      alt="No Contact Tracker logo"
+      alt="SOLACE: BREAKUP RECOVERY logo"
       className={cn("size-32 object-contain select-none", animate && "animate-logo-reveal", className)}
       draggable={false}
     />

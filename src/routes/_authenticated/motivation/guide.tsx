@@ -9,12 +9,12 @@ import { haptic } from "@/lib/native/haptics";
 export const Route = createFileRoute("/_authenticated/motivation/guide")({
   head: () => ({
     meta: [
-      { title: "Motivational guide | No Contact Tracker" },
+      { title: "Motivational guide | SOLACE: BREAKUP RECOVERY" },
       {
         name: "description",
         content: "Short motivational guides for the moments the urge to reach out feels loudest.",
       },
-      { property: "og:title", content: "Motivational guide | No Contact Tracker" },
+      { property: "og:title", content: "Motivational guide | SOLACE: BREAKUP RECOVERY" },
       {
         property: "og:description",
         content: "Pick a topic and read a calm, supportive guide written for right now.",

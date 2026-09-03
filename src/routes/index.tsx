@@ -11,13 +11,13 @@ export const Route = createFileRoute("/")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "No Contact Tracker: Breakup Reset" },
+      { title: "SOLACE: BREAKUP RECOVERY" },
       {
         name: "description",
         content:
           "Track your no-contact streak in real time, log red flags and wins, unlock badges and get through urges with an offline emergency toolkit.",
       },
-      { property: "og:title", content: "No Contact Tracker: Breakup Reset" },
+      { property: "og:title", content: "SOLACE: BREAKUP RECOVERY" },
       { property: "og:description", content: TAGLINE },
     ],
   }),
@@ -60,7 +60,7 @@ function Splash() {
         <AppLogo animate className="size-36" />
       </div>
       <h1 className="animate-rise mt-10 text-2xl font-semibold tracking-tight">
-        {t("landing.title", "No Contact Tracker")}
+        {t("landing.title", "SOLACE: BREAKUP RECOVERY")}
       </h1>
       <p className="text-sm font-medium tracking-[0.3em] text-muted-foreground uppercase">
         {t("landing.subtitle", "Breakup Reset")}

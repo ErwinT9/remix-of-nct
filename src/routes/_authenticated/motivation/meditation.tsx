@@ -13,12 +13,12 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/_authenticated/motivation/meditation")({
   head: () => ({
     meta: [
-      { title: "Mindful meditation | No Contact Tracker" },
+      { title: "Mindful meditation | SOLACE: BREAKUP RECOVERY" },
       {
         name: "description",
         content: "A few minutes of guided calm — pick a sound and breathe through the urge.",
       },
-      { property: "og:title", content: "Mindful meditation | No Contact Tracker" },
+      { property: "og:title", content: "Mindful meditation | SOLACE: BREAKUP RECOVERY" },
       {
         property: "og:description",
         content: "Create a space of calmness and serenity with a short meditation session.",

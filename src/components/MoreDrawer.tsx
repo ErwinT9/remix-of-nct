@@ -293,11 +293,11 @@ export function MoreDrawer({
       <Dialog open={aboutOpen} onOpenChange={setAboutOpen}>
         <DialogContent className="max-h-[85vh] overflow-y-auto rounded-3xl">
           <DialogHeader>
-            <DialogTitle>No Contact Tracker: Breakup Reset</DialogTitle>
+            <DialogTitle>SOLACE: BREAKUP RECOVERY</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 text-sm leading-relaxed">
             <p>
-              No Contact Tracker: Breakup Reset is your private companion for getting through a
+              SOLACE: BREAKUP RECOVERY is your private companion for getting through a
               breakup and staying committed to your healing journey.
             </p>
             <p>

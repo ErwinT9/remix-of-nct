@@ -2,7 +2,7 @@ import type { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
   appId: "com.nocontacttracker.app",
-  appName: "No Contact Tracker",
+  appName: "SOLACE: BREAKUP RECOVERY",
   webDir: "dist/client",
   android: {
     backgroundColor: "#FFFFFF",

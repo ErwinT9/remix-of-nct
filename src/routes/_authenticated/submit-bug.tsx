@@ -39,12 +39,12 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/_authenticated/submit-bug")({
   head: () => ({
     meta: [
-      { title: "Submit a Bug | No Contact Tracker" },
+      { title: "Submit a Bug | SOLACE: BREAKUP RECOVERY" },
       {
         name: "description",
         content: "Report a problem with the app and help us make your reset smoother.",
       },
-      { property: "og:title", content: "Submit a Bug | No Contact Tracker" },
+      { property: "og:title", content: "Submit a Bug | SOLACE: BREAKUP RECOVERY" },
       { property: "og:description", content: "Send us a bug report with screenshots and details." },
     ],
   }),

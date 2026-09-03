@@ -23,13 +23,13 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/_authenticated/streak-unlock")({
   head: () => ({
     meta: [
-      { title: "7-Day Streak Unlock | No Contact Tracker" },
+      { title: "7-Day Streak Unlock | SOLACE: BREAKUP RECOVERY" },
       {
         name: "description",
         content:
           "Watch your garden gain colour with every no contact day and unlock a printable coloring page at day 7.",
       },
-      { property: "og:title", content: "7-Day Streak Unlock | No Contact Tracker" },
+      { property: "og:title", content: "7-Day Streak Unlock | SOLACE: BREAKUP RECOVERY" },
       {
         property: "og:description",
         content: "Every streak day adds a splash of colour to your garden.",

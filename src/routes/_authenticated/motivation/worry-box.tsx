@@ -16,12 +16,12 @@ import type { WorryEntry } from "@/data/types";
 export const Route = createFileRoute("/_authenticated/motivation/worry-box")({
   head: () => ({
     meta: [
-      { title: "Worry Box | No Contact Tracker" },
+      { title: "Worry Box | SOLACE: BREAKUP RECOVERY" },
       {
         name: "description",
         content: "Write down what is worrying you and store it safely until you are ready.",
       },
-      { property: "og:title", content: "Worry Box | No Contact Tracker" },
+      { property: "og:title", content: "Worry Box | SOLACE: BREAKUP RECOVERY" },
       {
         property: "og:description",
         content: "A calm place to put your worries down for a while.",

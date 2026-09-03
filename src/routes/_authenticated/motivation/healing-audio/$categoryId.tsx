@@ -10,12 +10,12 @@ import { haptic } from "@/lib/native/haptics";
 export const Route = createFileRoute("/_authenticated/motivation/healing-audio/$categoryId")({
   head: () => ({
     meta: [
-      { title: "Healing Audio session | No Contact Tracker" },
+      { title: "Healing Audio session | SOLACE: BREAKUP RECOVERY" },
       {
         name: "description",
         content: "Choose a guided audio session and stream it whenever you need support.",
       },
-      { property: "og:title", content: "Healing Audio session | No Contact Tracker" },
+      { property: "og:title", content: "Healing Audio session | SOLACE: BREAKUP RECOVERY" },
       {
         property: "og:description",
         content: "Guided audio for calm, strength and healing during no contact.",

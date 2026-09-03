@@ -17,12 +17,12 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/_authenticated/motivation/gratitude-jar")({
   head: () => ({
     meta: [
-      { title: "Gratitude Jar | No Contact Tracker" },
+      { title: "Gratitude Jar | SOLACE: BREAKUP RECOVERY" },
       {
         name: "description",
         content: "Fill your jar with small things you are grateful for, one entry at a time.",
       },
-      { property: "og:title", content: "Gratitude Jar | No Contact Tracker" },
+      { property: "og:title", content: "Gratitude Jar | SOLACE: BREAKUP RECOVERY" },
       {
         property: "og:description",
         content: "Every entry is a step towards a more joyful mindset.",

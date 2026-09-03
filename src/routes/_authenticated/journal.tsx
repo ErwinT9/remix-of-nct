@@ -12,9 +12,9 @@ const JournalSuccessAnimation = lazy(importJournalSuccessAnimation);
 export const Route = createFileRoute("/_authenticated/journal")({
   head: () => ({
     meta: [
-      { title: "Journal | No Contact Tracker" },
+      { title: "Journal | SOLACE: BREAKUP RECOVERY" },
       { name: "description", content: "A private place to empty your head, one day at a time." },
-      { property: "og:title", content: "Journal | No Contact Tracker" },
+      { property: "og:title", content: "Journal | SOLACE: BREAKUP RECOVERY" },
       { property: "og:description", content: "Private daily entries that stay on your device first." },
     ],
   }),

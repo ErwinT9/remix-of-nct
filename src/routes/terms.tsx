@@ -4,9 +4,9 @@ import { useTranslation } from "react-i18next";
 export const Route = createFileRoute("/terms")({
   head: () => ({
     meta: [
-      { title: "Terms of Service | No Contact Tracker" },
-      { name: "description", content: "The terms that apply when you use No Contact Tracker: Breakup Reset." },
-      { property: "og:title", content: "Terms of Service | No Contact Tracker" },
+      { title: "Terms of Service | SOLACE: BREAKUP RECOVERY" },
+      { name: "description", content: "The terms that apply when you use SOLACE: BREAKUP RECOVERY." },
+      { property: "og:title", content: "Terms of Service | SOLACE: BREAKUP RECOVERY" },
       { property: "og:description", content: "Subscription, trial and acceptable-use terms." },
     ],
   }),
@@ -22,7 +22,7 @@ function Terms() {
       <p>
         {t(
           "terms.medicalBody",
-          "No Contact Tracker is a self-help tool, not therapy or crisis support. If you are in danger or having thoughts of self-harm, contact local emergency services.",
+          "SOLACE: BREAKUP RECOVERY is a self-help tool, not therapy or crisis support. If you are in danger or having thoughts of self-harm, contact local emergency services.",
         )}
       </p>
       <h2 className="pt-2 text-base font-medium text-foreground">{t("terms.accountTitle", "Your account")}</h2>

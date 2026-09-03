@@ -28,7 +28,7 @@ export const uiEn = {
     confirmEmail: "Check your email to confirm your account.",
   },
   landing: {
-    title: "No Contact Tracker",
+    title: "SOLACE: BREAKUP RECOVERY",
     subtitle: "Breakup Reset",
   },
   paywall: {
@@ -53,7 +53,7 @@ export const uiEn = {
   },
   privacy: {
     title: "Privacy Policy",
-    intro: "This page is maintained by the app owner to answer common privacy questions about No Contact Tracker. It is not an independent certification.",
+    intro: "This page is maintained by the app owner to answer common privacy questions about SOLACE: BREAKUP RECOVERY. It is not an independent certification.",
     storeTitle: "What we store",
     storeBody: "Your email address, streak dates, questionnaire answers, flags, wins, badges and unsent letters. Content is cached on your device and synced to your private account.",
     accessTitle: "Who can access it",
@@ -67,7 +67,7 @@ export const uiEn = {
   terms: {
     title: "Terms of Service",
     medicalTitle: "Not medical advice",
-    medicalBody: "No Contact Tracker is a self-help tool, not therapy or crisis support. If you are in danger or having thoughts of self-harm, contact local emergency services.",
+    medicalBody: "SOLACE: BREAKUP RECOVERY is a self-help tool, not therapy or crisis support. If you are in danger or having thoughts of self-harm, contact local emergency services.",
     accountTitle: "Your account",
     accountBody: "You are responsible for keeping your login credentials secure and for the content you store.",
     subscriptionsTitle: "Subscriptions",
