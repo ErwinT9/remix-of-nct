@@ -76,7 +76,7 @@ export function DatePickerField({
   const maxDate = dateValueToDate(max);
 
   const disabled = useMemo(() => {
-    const rules: Array<{ before?: Date; after?: Date }> = [];
+    const rules: Array<{ before: Date } | { after: Date }> = [];
     if (minDate) rules.push({ before: minDate });
     if (maxDate) rules.push({ after: maxDate });
     return rules.length ? rules : undefined;
@@ -129,8 +129,8 @@ export function DatePickerField({
 /** 24h "HH:MM" -> { hour12, minute, meridiem } */
 function parseTimeValue(value: string | null | undefined) {
   const [rawHour, rawMinute] = (value ?? "").split(":").map(Number);
-  const hours = Number.isFinite(rawHour) ? Math.min(23, Math.max(0, rawHour)) : 9;
-  const minute = Number.isFinite(rawMinute) ? Math.min(59, Math.max(0, rawMinute)) : 0;
+  const hours = Number.isFinite(rawHour) ? Math.min(23, Math.max(0, rawHour as number)) : 9;
+  const minute = Number.isFinite(rawMinute) ? Math.min(59, Math.max(0, rawMinute as number)) : 0;
   return {
     hour12: hours % 12 === 0 ? 12 : hours % 12,
     minute,
