@@ -5,6 +5,7 @@ import { toast } from "sonner";
 
 import { SubScreen } from "@/components/SubScreen";
 import { Button } from "@/components/ui/button";
+import { TimePickerField } from "@/components/pickers";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import type { ActivityProps } from "@/components/journey/activities";
@@ -516,14 +517,13 @@ export function SleepRoutineActivity({ progress, onComplete, onExit, busy }: Act
         <p className="mt-1 text-sm text-muted-foreground">
           The time you'd like to start slowing down each night.
         </p>
-        <Input
-          type="time"
+        <TimePickerField
+          className="mt-3"
           value={time}
-          onChange={(event) => {
-            setTime(event.target.value);
+          onChange={(next) => {
+            setTime(next);
             setSavedOnce(false);
           }}
-          className="mt-3 h-12 w-40 rounded-2xl"
         />
       </div>
 
