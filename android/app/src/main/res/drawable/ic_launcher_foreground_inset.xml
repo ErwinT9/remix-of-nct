@@ -4,4 +4,4 @@
      being cropped by the launcher mask (previously it looked zoomed in). -->
 <inset xmlns:android="http://schemas.android.com/apk/res/android"
     android:drawable="@mipmap/ic_launcher_foreground"
-    android:inset="17%" />
+    android:inset="24%" />
