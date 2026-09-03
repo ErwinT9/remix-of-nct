@@ -2,6 +2,7 @@ import type { JourneyProgress } from "@/data/types";
 
 export const JOURNEY_LEVEL_1 = "level-1";
 export const JOURNEY_LEVEL_2 = "level-2";
+export const JOURNEY_LEVEL_3 = "level-3";
 
 export type JourneyActivityId =
   | "l1-feelings"
@@ -13,7 +14,13 @@ export type JourneyActivityId =
   | "l2-prepare-rest"
   | "l2-let-go"
   | "l2-affirmation"
-  | "l2-sleep-routine";
+  | "l2-sleep-routine"
+  | "l3-who-am-i"
+  | "l3-strengths"
+  | "l3-just-for-you"
+  | "l3-confidence"
+  | "l3-self-portrait";
+
 
 export type JourneyActivityDef = {
   id: JourneyActivityId;
