@@ -328,7 +328,7 @@ function JourneyScreen() {
       </ul>
 
       <p className="mt-6 px-1 text-center text-xs text-muted-foreground">
-        More levels arrive as you complete the ones above.
+        Complete all five levels to finish your Journey.
       </p>
 
     </SubScreen>
