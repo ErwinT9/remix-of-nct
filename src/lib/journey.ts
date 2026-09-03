@@ -3,6 +3,7 @@ import type { JourneyProgress } from "@/data/types";
 export const JOURNEY_LEVEL_1 = "level-1";
 export const JOURNEY_LEVEL_2 = "level-2";
 export const JOURNEY_LEVEL_3 = "level-3";
+export const JOURNEY_LEVEL_4 = "level-4";
 
 export type JourneyActivityId =
   | "l1-feelings"
@@ -19,7 +20,12 @@ export type JourneyActivityId =
   | "l3-strengths"
   | "l3-just-for-you"
   | "l3-confidence"
-  | "l3-self-portrait";
+  | "l3-self-portrait"
+  | "l4-one-good-thing"
+  | "l4-worthy-moment"
+  | "l4-appreciate"
+  | "l4-gratitude-practice"
+  | "l4-good-things-list";
 
 
 export type JourneyActivityDef = {
@@ -166,6 +172,49 @@ export const LEVEL_3 = {
   ] satisfies JourneyActivityDef[],
 } as const;
 
+export const LEVEL_4 = {
+  id: JOURNEY_LEVEL_4,
+  title: "Level 4: Notice the Good",
+  description:
+    "Shift your attention toward gratitude, positive moments, and the good things that still exist in everyday life.",
+  objective:
+    "Build the habit of noticing gratitude, positive moments, and the good that remains in daily life.",
+  activities: [
+    {
+      id: "l4-one-good-thing",
+      title: "Find One Good Thing",
+      description: "Notice and record one positive thing from your day, no matter how small.",
+      requiredDays: 1,
+    },
+    {
+      id: "l4-worthy-moment",
+      title: "A Moment Worth Remembering",
+      description: "Write about good or meaningful moments that make you smile, over two different days.",
+      requiredDays: 2,
+    },
+    {
+      id: "l4-appreciate",
+      title: "Appreciate What You Have",
+      description:
+        "Reflect on the people, places, experiences, abilities, and simple things you appreciate right now.",
+      requiredDays: 1,
+    },
+    {
+      id: "l4-gratitude-practice",
+      title: "Gratitude in Practice",
+      description: "Record at least one thing you're grateful for, on four different days.",
+      requiredDays: 4,
+    },
+    {
+      id: "l4-good-things-list",
+      title: "My Good Things List",
+      description:
+        "Create a personal list of the things that bring meaning, comfort, happiness, or hope into your life.",
+      requiredDays: 1,
+    },
+  ] satisfies JourneyActivityDef[],
+} as const;
+
 export type JourneyLevelDef = {
   id: string;
   title: string;
@@ -174,7 +223,7 @@ export type JourneyLevelDef = {
   activities: readonly JourneyActivityDef[];
 };
 
-export const LEVELS: readonly JourneyLevelDef[] = [LEVEL_1, LEVEL_2, LEVEL_3];
+export const LEVELS: readonly JourneyLevelDef[] = [LEVEL_1, LEVEL_2, LEVEL_3, LEVEL_4];
 
 export type ActivityState = "completed" | "available" | "locked";
 export type LevelState = "completed" | "in_progress" | "available" | "locked";
