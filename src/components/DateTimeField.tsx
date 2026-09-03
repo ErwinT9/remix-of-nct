@@ -59,7 +59,7 @@ export function DateTimeField({ value, onChange, disableFuture, id, invalid, cla
   return (
     <div className={cn("space-y-2", className)}>
       <DatePickerField
-        id={id}
+        {...(id ? { id } : {})}
         value={parts.dateValue}
         invalid={invalid ?? false}
         {...(disableFuture ? { max: toLocalDateValue() } : {})}
@@ -76,8 +76,8 @@ export function DateTimeField({ value, onChange, disableFuture, id, invalid, cla
             meridiem: hours >= 12 ? "PM" : "AM",
           });
         }}
-        hourDisabled={(hour24) => hourDisabled(hour24 % 12 === 0 ? 12 : hour24 % 12)}
-        minuteDisabled={minuteDisabled}
+        hourDisabled={(hour24) => Boolean(hourDisabled(hour24 % 12 === 0 ? 12 : hour24 % 12))}
+        minuteDisabled={(minute) => Boolean(minuteDisabled(minute))}
         meridiemDisabled={(meridiem) => meridiem === "PM" && Boolean(isToday) && nowHour < 12}
       />
       {value ? <p className="text-xs text-muted-foreground">{formatLocalDateTime(value)}</p> : null}
