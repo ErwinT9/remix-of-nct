@@ -33,7 +33,7 @@ export const screensEn = {
     delete: "Delete",
   },
   activity: {
-    title: "Workbook",
+    title: "Activity",
     subtitle: "The daily work that rebuilds you",
     overview: "Activity overview",
     quickActions: "Quick actions",
