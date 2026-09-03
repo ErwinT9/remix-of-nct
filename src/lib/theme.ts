@@ -5,6 +5,8 @@
  * The preference is mirrored to localStorage synchronously so a reload
  * paints the right theme immediately (see the boot script in __root).
  */
+import { setSystemBarsAppearance } from "@/lib/systemBars";
+
 export type ThemeMode = "light" | "dark" | "system";
 export type ResolvedTheme = "light" | "dark";
 
