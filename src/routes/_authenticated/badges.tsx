@@ -13,12 +13,12 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/_authenticated/badges")({
   head: () => ({
     meta: [
-      { title: "Badges | No Contact Tracker" },
+      { title: "Badges | SOLACE: BREAKUP RECOVERY" },
       {
         name: "description",
         content: "Unlock badges as your no-contact streak grows, from day one to a full year.",
       },
-      { property: "og:title", content: "Badges | No Contact Tracker" },
+      { property: "og:title", content: "Badges | SOLACE: BREAKUP RECOVERY" },
       { property: "og:description", content: "Milestones that prove how far you've come." },
     ],
   }),

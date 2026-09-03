@@ -30,12 +30,12 @@ import { haptic } from "@/lib/native/haptics";
 export const Route = createFileRoute("/_authenticated/wins")({
   head: () => ({
     meta: [
-      { title: "Wins | No Contact Tracker" },
+      { title: "Wins | SOLACE: BREAKUP RECOVERY" },
       {
         name: "description",
         content: "Celebrate the small wins that add up to a life without them.",
       },
-      { property: "og:title", content: "Wins | No Contact Tracker" },
+      { property: "og:title", content: "Wins | SOLACE: BREAKUP RECOVERY" },
       { property: "og:description", content: "Proof that you are moving forward." },
     ],
   }),

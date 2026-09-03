@@ -8,9 +8,9 @@ import { ritualRepo } from "@/data/repository";
 export const Route = createFileRoute("/_authenticated/rituals")({
   head: () => ({
     meta: [
-      { title: "Rituals | No Contact Tracker" },
+      { title: "Rituals | SOLACE: BREAKUP RECOVERY" },
       { name: "description", content: "Small daily rituals that keep your recovery steady." },
-      { property: "og:title", content: "Rituals | No Contact Tracker" },
+      { property: "og:title", content: "Rituals | SOLACE: BREAKUP RECOVERY" },
       { property: "og:description", content: "Build the routine that carries you through no contact." },
     ],
   }),

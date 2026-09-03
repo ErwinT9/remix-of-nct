@@ -1,7 +1,7 @@
 import { isNative, platformName } from "@/lib/native/platform";
 
 export const SUPPORT_EMAIL = "support@vexalabs.biz";
-const SUBJECT = "No Contact Tracker: Breakup Reset Feedback";
+const SUBJECT = "SOLACE: BREAKUP RECOVERY Feedback";
 
 type DeviceMeta = {
   appVersion: string;

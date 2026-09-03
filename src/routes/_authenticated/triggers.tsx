@@ -12,9 +12,9 @@ const TriggerSuccessAnimation = lazy(importTriggerSuccessAnimation);
 export const Route = createFileRoute("/_authenticated/triggers")({
   head: () => ({
     meta: [
-      { title: "Triggers | No Contact Tracker" },
+      { title: "Triggers | SOLACE: BREAKUP RECOVERY" },
       { name: "description", content: "Name the moments that make you want to reach out." },
-      { property: "og:title", content: "Triggers | No Contact Tracker" },
+      { property: "og:title", content: "Triggers | SOLACE: BREAKUP RECOVERY" },
       { property: "og:description", content: "Spot your patterns so they stop catching you off guard." },
     ],
   }),

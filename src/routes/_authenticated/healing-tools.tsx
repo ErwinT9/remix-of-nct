@@ -17,12 +17,12 @@ import { haptic } from "@/lib/native/haptics";
 export const Route = createFileRoute("/_authenticated/healing-tools")({
   head: () => ({
     meta: [
-      { title: "Healing Tools | No Contact Tracker" },
+      { title: "Healing Tools | SOLACE: BREAKUP RECOVERY" },
       {
         name: "description",
         content: "Gentle tools — guides, audio, walks and more — to support you during no contact.",
       },
-      { property: "og:title", content: "Healing Tools | No Contact Tracker" },
+      { property: "og:title", content: "Healing Tools | SOLACE: BREAKUP RECOVERY" },
       {
         property: "og:description",
         content: "Open the healing tools for gentle reminders that keep your streak alive.",

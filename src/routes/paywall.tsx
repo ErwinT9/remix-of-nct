@@ -27,7 +27,7 @@ export const Route = createFileRoute("/paywall")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Premium | No Contact Tracker" },
+      { title: "Premium | SOLACE: BREAKUP RECOVERY" },
       { name: "description", content: "30 days free, full Pro access during your trial, and cancel anytime. Keep your progress, streaks & personal data." },
       { property: "og:title", content: "30 Days Free. Your Best Chance to Reset." },
       { property: "og:description", content: "Get full access to all the tools. 30 days completely free. Cancel anytime." },

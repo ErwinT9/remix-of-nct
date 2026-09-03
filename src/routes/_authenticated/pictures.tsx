@@ -31,9 +31,9 @@ async function dataUrlToFile(dataUrl: string): Promise<File> {
 export const Route = createFileRoute("/_authenticated/pictures")({
   head: () => ({
     meta: [
-      { title: "Pictures | No Contact Tracker" },
+      { title: "Pictures | SOLACE: BREAKUP RECOVERY" },
       { name: "description", content: "Save the photos that remind you why you're staying strong." },
-      { property: "og:title", content: "Pictures | No Contact Tracker" },
+      { property: "og:title", content: "Pictures | SOLACE: BREAKUP RECOVERY" },
       { property: "og:description", content: "A private album for your reset." },
     ],
   }),

@@ -30,12 +30,12 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/_authenticated/letters")({
   head: () => ({
     meta: [
-      { title: "Unsent letters | No Contact Tracker" },
+      { title: "Unsent letters | SOLACE: BREAKUP RECOVERY" },
       {
         name: "description",
         content: "Write everything you want to say to your ex — privately, and never send it.",
       },
-      { property: "og:title", content: "Unsent letters | No Contact Tracker" },
+      { property: "og:title", content: "Unsent letters | SOLACE: BREAKUP RECOVERY" },
       { property: "og:description", content: "Say it all here instead of in their inbox." },
     ],
   }),

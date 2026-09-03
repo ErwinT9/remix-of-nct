@@ -23,12 +23,12 @@ import { haptic } from "@/lib/native/haptics";
 export const Route = createFileRoute("/_authenticated/motivation/walk")({
   head: () => ({
     meta: [
-      { title: "Outdoor walk | No Contact Tracker" },
+      { title: "Outdoor walk | SOLACE: BREAKUP RECOVERY" },
       {
         name: "description",
         content: "A simple timed outdoor walk for your body and mind — no GPS, no tracking.",
       },
-      { property: "og:title", content: "Outdoor walk | No Contact Tracker" },
+      { property: "og:title", content: "Outdoor walk | SOLACE: BREAKUP RECOVERY" },
       {
         property: "og:description",
         content: "Step outside, start the timer, and notice the beauty of nature as you walk.",

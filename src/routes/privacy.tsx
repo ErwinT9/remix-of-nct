@@ -4,9 +4,9 @@ import { useTranslation } from "react-i18next";
 export const Route = createFileRoute("/privacy")({
   head: () => ({
     meta: [
-      { title: "Privacy Policy | No Contact Tracker" },
-      { name: "description", content: "How No Contact Tracker stores, protects and deletes your personal data." },
-      { property: "og:title", content: "Privacy Policy | No Contact Tracker" },
+      { title: "Privacy Policy | SOLACE: BREAKUP RECOVERY" },
+      { name: "description", content: "How SOLACE: BREAKUP RECOVERY stores, protects and deletes your personal data." },
+      { property: "og:title", content: "Privacy Policy | SOLACE: BREAKUP RECOVERY" },
       { property: "og:description", content: "Your flags, wins and letters are private to your account and encrypted in transit." },
     ],
   }),
@@ -21,7 +21,7 @@ function Privacy() {
       <p>
         {t(
           "privacy.intro",
-          "This page is maintained by the app owner to answer common privacy questions about No Contact Tracker. It is not an independent certification.",
+          "This page is maintained by the app owner to answer common privacy questions about SOLACE: BREAKUP RECOVERY. It is not an independent certification.",
         )}
       </p>
       <h2 className="pt-2 text-base font-medium text-foreground">{t("privacy.storeTitle", "What we store")}</h2>

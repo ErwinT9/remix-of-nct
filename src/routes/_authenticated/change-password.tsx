@@ -16,12 +16,12 @@ import { toastOnce } from "@/lib/toastOnce";
 export const Route = createFileRoute("/_authenticated/change-password")({
   head: () => ({
     meta: [
-      { title: "Change password | No Contact Tracker" },
+      { title: "Change password | SOLACE: BREAKUP RECOVERY" },
       {
         name: "description",
-        content: "Update the password for your No Contact Tracker account securely.",
+        content: "Update the password for your SOLACE: BREAKUP RECOVERY account securely.",
       },
-      { property: "og:title", content: "Change password | No Contact Tracker" },
+      { property: "og:title", content: "Change password | SOLACE: BREAKUP RECOVERY" },
       { property: "og:description", content: "Update your account password securely." },
     ],
   }),

@@ -8,9 +8,9 @@ import { affirmationRepo } from "@/data/repository";
 export const Route = createFileRoute("/_authenticated/affirmations")({
   head: () => ({
     meta: [
-      { title: "Affirmations | No Contact Tracker" },
+      { title: "Affirmations | SOLACE: BREAKUP RECOVERY" },
       { name: "description", content: "Write the lines you want to hear on the hard days." },
-      { property: "og:title", content: "Affirmations | No Contact Tracker" },
+      { property: "og:title", content: "Affirmations | SOLACE: BREAKUP RECOVERY" },
       { property: "og:description", content: "Your own words, saved for the moments you need them." },
     ],
   }),

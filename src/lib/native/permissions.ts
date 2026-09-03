@@ -23,7 +23,7 @@ export const PERMISSION_COPY: Record<
   notifications: {
     title: "Notifications",
     why: "Gentle daily reminders, streak nudges and milestone celebrations. Nothing noisy.",
-    settingsHint: "Turn on Notifications for No Contact Tracker to receive reminders.",
+    settingsHint: "Turn on Notifications for SOLACE: BREAKUP RECOVERY to receive reminders.",
   },
   camera: {
     title: "Camera",

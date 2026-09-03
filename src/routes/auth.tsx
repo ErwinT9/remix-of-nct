@@ -26,9 +26,9 @@ export const Route = createFileRoute("/auth")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Sign in | No Contact Tracker" },
+      { title: "Sign in | SOLACE: BREAKUP RECOVERY" },
       { name: "description", content: "Create your private account or sign in to continue your streak." },
-      { property: "og:title", content: "Sign in | No Contact Tracker" },
+      { property: "og:title", content: "Sign in | SOLACE: BREAKUP RECOVERY" },
       { property: "og:description", content: "Your streak, flags, wins and letters stay private to you." },
     ],
   }),

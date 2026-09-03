@@ -29,12 +29,12 @@ export const Route = createFileRoute("/_authenticated/questionnaire")({
       : {},
   head: () => ({
     meta: [
-      { title: "Your reset plan | No Contact Tracker" },
+      { title: "Your reset plan | SOLACE: BREAKUP RECOVERY" },
       {
         name: "description",
         content: "Twelve quick questions so your no-contact plan fits your breakup.",
       },
-      { property: "og:title", content: "Your reset plan | No Contact Tracker" },
+      { property: "og:title", content: "Your reset plan | SOLACE: BREAKUP RECOVERY" },
       {
         property: "og:description",
         content: "Personalise your no-contact recovery in two minutes.",

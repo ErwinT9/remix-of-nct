@@ -21,12 +21,12 @@ import {
 export const Route = createFileRoute("/_authenticated/mood-analytics")({
   head: () => ({
     meta: [
-      { title: "Mood analytics | No Contact Tracker" },
+      { title: "Mood analytics | SOLACE: BREAKUP RECOVERY" },
       {
         name: "description",
         content: "See how your moods moved through the week and read every mood you logged.",
       },
-      { property: "og:title", content: "Mood analytics | No Contact Tracker" },
+      { property: "og:title", content: "Mood analytics | SOLACE: BREAKUP RECOVERY" },
       { property: "og:description", content: "Your real mood data, week by week." },
     ],
   }),

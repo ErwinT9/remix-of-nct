@@ -47,12 +47,12 @@ function formatFlagDate(value: string): string {
 export const Route = createFileRoute("/_authenticated/flags")({
   head: () => ({
     meta: [
-      { title: "Red flags | No Contact Tracker" },
+      { title: "Red flags | SOLACE: BREAKUP RECOVERY" },
       {
         name: "description",
         content: "Keep a private list of the reasons you left, ready for the moments you forget.",
       },
-      { property: "og:title", content: "Red flags | No Contact Tracker" },
+      { property: "og:title", content: "Red flags | SOLACE: BREAKUP RECOVERY" },
       { property: "og:description", content: "Remember why you left, in your own words." },
     ],
   }),

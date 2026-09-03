@@ -15,9 +15,9 @@ export const Route = createFileRoute("/reset-password")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Set a new password | No Contact Tracker" },
-      { name: "description", content: "Choose a new password for your No Contact Tracker account." },
-      { property: "og:title", content: "Set a new password | No Contact Tracker" },
+      { title: "Set a new password | SOLACE: BREAKUP RECOVERY" },
+      { name: "description", content: "Choose a new password for your SOLACE: BREAKUP RECOVERY account." },
+      { property: "og:title", content: "Set a new password | SOLACE: BREAKUP RECOVERY" },
       { property: "og:description", content: "Finish resetting your account password." },
     ],
   }),

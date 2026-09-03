@@ -19,13 +19,13 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/_authenticated/motivation/alcohol-control")({
   head: () => ({
     meta: [
-      { title: "Alcohol Control | No Contact Tracker" },
+      { title: "Alcohol Control | SOLACE: BREAKUP RECOVERY" },
       {
         name: "description",
         content:
           "A calming guided voice session to help you ride out the urge to drink and stay in control.",
       },
-      { property: "og:title", content: "Alcohol Control | No Contact Tracker" },
+      { property: "og:title", content: "Alcohol Control | SOLACE: BREAKUP RECOVERY" },
       {
         property: "og:description",
         content: "Stream a supportive audio session for the moments the craving feels loudest.",

@@ -1,18 +1,18 @@
-import logo from "@/assets/app-logo.png";
+import { Mascot, type MascotSize } from "@/components/Mascot";
 import { cn } from "@/lib/utils";
 
 /**
- * Brand mark: green heart formed of leaves.
- * Used on the in-app splash and the auth screens. The previous SVG mark
- * (HeartLeaf.tsx) is kept in the codebase so it can be restored.
+ * Brand mark: the Solace tortoise mascot. Kept as a thin wrapper so every
+ * existing brand placement keeps its own sizing classes.
  */
-export function AppLogo({ animate = false, className }: { animate?: boolean; className?: string }) {
-  return (
-    <img
-      src={logo}
-      alt="No Contact Tracker logo"
-      className={cn("size-32 object-contain select-none", animate && "animate-logo-reveal", className)}
-      draggable={false}
-    />
-  );
+export function AppLogo({
+  animate = false,
+  size = "md",
+  className,
+}: {
+  animate?: boolean;
+  size?: MascotSize;
+  className?: string;
+}) {
+  return <Mascot size={size} animate reveal={animate} className={cn(className)} />;
 }

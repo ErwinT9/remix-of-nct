@@ -32,12 +32,12 @@ import { haptic } from "@/lib/native/haptics";
 export const Route = createFileRoute("/_authenticated/activity")({
   head: () => ({
     meta: [
-      { title: "Activity workbook | No Contact Tracker" },
+      { title: "Activity workbook | SOLACE: BREAKUP RECOVERY" },
       {
         name: "description",
         content: "Your workbook: pictures, journal, triggers, rituals and affirmations.",
       },
-      { property: "og:title", content: "Activity workbook | No Contact Tracker" },
+      { property: "og:title", content: "Activity workbook | SOLACE: BREAKUP RECOVERY" },
       {
         property: "og:description",
         content: "Daily recovery work in one calm place — track it, don't just feel it.",

@@ -16,12 +16,12 @@ import { toastOnce } from "@/lib/toastOnce";
 export const Route = createFileRoute("/_authenticated/change-email")({
   head: () => ({
     meta: [
-      { title: "Change email | No Contact Tracker" },
+      { title: "Change email | SOLACE: BREAKUP RECOVERY" },
       {
         name: "description",
-        content: "Update the email address linked to your No Contact Tracker account.",
+        content: "Update the email address linked to your SOLACE: BREAKUP RECOVERY account.",
       },
-      { property: "og:title", content: "Change email | No Contact Tracker" },
+      { property: "og:title", content: "Change email | SOLACE: BREAKUP RECOVERY" },
       { property: "og:description", content: "Update your account email address securely." },
     ],
   }),

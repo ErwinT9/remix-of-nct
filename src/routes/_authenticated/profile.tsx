@@ -81,12 +81,12 @@ import { isNative } from "@/lib/native/platform";
 export const Route = createFileRoute("/_authenticated/profile")({
   head: () => ({
     meta: [
-      { title: "Settings | No Contact Tracker" },
+      { title: "Settings | SOLACE: BREAKUP RECOVERY" },
       {
         name: "description",
         content: "Manage your profile, reminders, backup and account.",
       },
-      { property: "og:title", content: "Settings | No Contact Tracker" },
+      { property: "og:title", content: "Settings | SOLACE: BREAKUP RECOVERY" },
       { property: "og:description", content: "Your account, reminders and privacy settings." },
     ],
   }),
