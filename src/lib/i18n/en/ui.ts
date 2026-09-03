@@ -28,7 +28,7 @@ export const uiEn = {
     confirmEmail: "Check your email to confirm your account.",
   },
   landing: {
-    title: "SOLACE",
+    title: "SERENITY",
     subtitle: "Breakup Recovery",
   },
   paywall: {
