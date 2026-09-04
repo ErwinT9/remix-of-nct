@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">SERENITY</string>
-    <string name="title_activity_main">SERENITY</string>
+    <string name="app_name">STEADY</string>
+    <string name="title_activity_main">STEADY</string>
     <string name="package_name">com.nocontacttracker.app</string>
     <string name="custom_url_scheme">com.nocontacttracker.app</string>
 </resources>
