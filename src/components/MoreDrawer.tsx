@@ -123,6 +123,14 @@ export function MoreDrawer({
       onClick: () => void shareApp(),
     },
     {
+      icon: Star,
+      label: "Rate Us on Google",
+      onClick: () =>
+        void openExternalUrl(
+          "https://play.google.com/store/apps/details?id=com.nocontacttracker.app",
+        ),
+    },
+    {
       icon: MessageSquareHeart,
       label: t("drawer.feedback", "Give Feedback"),
       onClick: () => {
@@ -294,12 +302,12 @@ export function MoreDrawer({
       <Dialog open={aboutOpen} onOpenChange={setAboutOpen}>
         <DialogContent className="max-h-[85vh] overflow-y-auto rounded-3xl">
           <DialogHeader>
-            <DialogTitle>SOLACE: BREAKUP RECOVERY</DialogTitle>
+            <DialogTitle>STEADY: NO CONTACT & BREAKUP RECOVERY</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 text-sm leading-relaxed">
             <p>
-              SOLACE: BREAKUP RECOVERY is your private companion for getting through a
-              breakup and staying committed to your healing journey.
+              STEADY: NO CONTACT & BREAKUP RECOVERY is your private companion for getting
+              through a breakup and staying committed to your healing journey.
             </p>
             <p>
               Track your No Contact streak, journal your thoughts, monitor your progress, set
