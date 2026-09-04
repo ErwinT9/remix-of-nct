@@ -2,7 +2,7 @@ import type { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
   appId: "com.nocontacttracker.app",
-  appName: "SERENITY",
+  appName: "STEADY",
   webDir: "dist/client",
   android: {
     backgroundColor: "#FFFFFF",
